@@ -9,8 +9,8 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-            - run: npm install
-            - run: npm test
+            - run: yarn
+            - run: yarn test
   build-and-deploy:
     executor:
       name: node/default
@@ -18,9 +18,9 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-            - run: npm install
-            - run: npm test
-            - run: npm deploy
+            - run: yarn
+            - run: yarn
+            - run: yarn deploy
 workflows:
     build-and-test:
       jobs:
