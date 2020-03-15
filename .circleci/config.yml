@@ -1,9 +1,9 @@
 version: 2.1
 orbs:
   node: circleci/node@1.1.6
-  node: circlci/aws-cli@0.1.22
+  aws: circlci/aws-cli@0.1.22
 jobs:
-  build-and-test:
+  install-and-test:
     executor:
       name: node/default
     steps:
@@ -12,24 +12,30 @@ jobs:
           steps:
             - run: yarn
             - run: yarn test
-  build-and-deploy:
+  build:
     executor:
       name: node/default
     steps:
       - checkout
       - node/with-cache:
           steps:
-            - run: yarn
+            - run: yarn build
             - save_cache:
                 paths:
                   - node_modules
                 key: v1-dependencies-{{ checksum "package.json" }}
-            - run: yarn test
-            - run: aws --version
-            - run: aws s3 ls
-            - run: yarn deploy
+  deploy:
+    executor:
+      name: aws/default
+    steps:
+      - checkout
+      - aws/with-cache:
+          steps:
+            - run: aws s3 sync build/ s3://ocx-web-app --delete
+          
 workflows:
     build-and-test:
       jobs:
-        - build-and-test
-        - build-and-deploy
+        - install-and-test
+        - build
+        - deploy
