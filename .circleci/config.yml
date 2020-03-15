@@ -29,6 +29,8 @@ jobs:
       name: aws/default
     steps:
       - checkout
+      - aws/setup:
+          profile-name: "default"
       - aws/s3-sync:
           from: build/
           to: "s3://ocx-web-app"
