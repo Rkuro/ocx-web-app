@@ -25,6 +25,8 @@ jobs:
                   - node_modules
                 key: v1-dependencies-{{ checksum "package.json" }}
   deploy:
+    docker:
+      - image: 'cimg/python:3.6'
     steps:
       - checkout
       - aws/sync:
