@@ -29,6 +29,9 @@ jobs:
       - image: 'cimg/python:3.6'
     steps:
       - checkout
+      - node/with-cache:
+          - run: yarn
+          - run: yarn build
       - aws/sync:
           from: build/
           to: "s3://ocx-web-app"
