@@ -29,9 +29,10 @@ jobs:
       name: aws/default
     steps:
       - checkout
-      - aws/with-cache:
-          steps:
-            - run: aws s3 sync build/ s3://ocx-web-app --delete
+      - aws/s3-sync:
+          from: build/
+          to: "s3://ocx-web-app"
+          overwrite: true
           
 workflows:
     build-and-test:
