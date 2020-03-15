@@ -29,15 +29,13 @@ jobs:
       name: aws/default
     steps:
       - checkout
-      - aws/setup:
-          profile-name: "default"
       - aws/sync:
           from: build/
           to: "s3://ocx-web-app"
           overwrite: true
           
 workflows:
-    build-and-test:
+    test-build-deploy:
       jobs:
         - install-and-test
         - build
