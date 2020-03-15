@@ -19,7 +19,17 @@ jobs:
       - node/with-cache:
           steps:
             - run: yarn
-            - run: yarn
+            - save_cache:
+                paths:
+                  - node_modules
+                key: v1-dependencies-{{ checksum "package.json" }}
+            - run: yarn test
+            - run: sudo apt-get update && sudo apt-get install -y python-dev
+            - run: sudo curl -0 https://bootstrap.pypa.io/get-pip.py
+            - run: sudo python get-pip.py
+            - run: sudo pip install awscli --upgrade
+            - run: aws --version
+            - run: aws s3 ls
             - run: yarn deploy
 workflows:
     build-and-test:
