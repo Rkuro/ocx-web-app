@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@1.1.6
-  aws: circleci/aws-cli@0.1.22
+  aws: circleci/aws-s3@1.0.15
 jobs:
   install-and-test:
     executor:
@@ -31,7 +31,7 @@ jobs:
       - checkout
       - aws/setup:
           profile-name: "default"
-      - aws/s3-sync:
+      - aws/sync:
           from: build/
           to: "s3://ocx-web-app"
           overwrite: true
