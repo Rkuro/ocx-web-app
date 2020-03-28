@@ -1,5 +1,6 @@
 #yaml 
 # Javascript Node CircleCI 2.0 configuration file
+# This is super hacky and gross, and there's better ways to use orbs and stuff but not worth it right now.
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
