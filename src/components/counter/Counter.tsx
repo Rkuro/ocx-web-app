@@ -1,60 +1,62 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   decrement,
   increment,
-  incrementByAmount,
-  incrementAsync,
   selectCount,
 } from './counterSlice';
-import styles from './Counter.module.css';
+import { createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import clsx from 'clsx';
+import { Button } from '@material-ui/core';
+
+
+const useStyles = makeStyles((theme: Theme) => createStyles ({
+    root: {
+        display:'flex',
+        flex:1,
+    },
+    row: {
+
+    },
+    button: {
+
+    },
+    value: {
+
+    }
+}))
 
 export function Counter() {
-  const count = useSelector(selectCount);
-  const dispatch = useDispatch();
-  const [incrementAmount, setIncrementAmount] = useState('2');
+    const classes = useStyles();
+    const count = useSelector(selectCount);
+    const dispatch = useDispatch();
+    // const [incrementAmount, setIncrementAmount] = useState('2');
 
-  return (
-    <div>
-      <div className={styles.row}>
-        <button
-          className={styles.button}
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          +
-        </button>
-        <span className={styles.value}>{count}</span>
-        <button
-          className={styles.button}
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          -
-        </button>
-      </div>
-      <div className={styles.row}>
-        <input
-          className={styles.textbox}
-          aria-label="Set increment amount"
-          value={incrementAmount}
-          onChange={e => setIncrementAmount(e.target.value)}
-        />
-        <button
-          className={styles.button}
-          onClick={() =>
-            dispatch(incrementByAmount(Number(incrementAmount) || 0))
-          }
-        >
-          Add Amount
-        </button>
-        <button
-          className={styles.asyncButton}
-          onClick={() => dispatch(incrementAsync(Number(incrementAmount) || 0))}
-        >
-          Add Async
-        </button>
-      </div>
-    </div>
-  );
+    return (
+        <React.Fragment>
+            <div className={clsx({
+                [classes.root]: true
+            })}>
+                <div className={classes.row}>
+                    <Button
+                        className={classes.button}
+                        aria-label="Increment value"
+                        onClick={() => dispatch(increment())}
+                    >
+                        +
+                    </Button>
+                    <span className={classes.value}>{count}</span>
+                    <Button
+                        className={classes.button}
+                        aria-label="Decrement value"
+                        onClick={() => dispatch(decrement())}
+                    >
+                        -
+                    </Button>
+                    {/* content */}
+                </div>
+                
+            </div>
+        </React.Fragment>
+    );
 }

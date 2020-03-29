@@ -1,19 +1,14 @@
 import React from 'react';
+import Router from './routers/root'
 import './App.css';
-import { Sidebar } from './components/sidebar/Sidebar';
-import { Counter } from './components/counter/Counter';
 
 function App() {
   return (
       <React.Fragment>
         <div className="App">
-            <Sidebar/>
-
-            <Counter/>
-
+            <Router/>
         </div>
       </React.Fragment>
-    
   );
 }
 

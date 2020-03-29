@@ -8,13 +8,14 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import { drawerWidth } from "../../app/constants/styles";
 
-const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     root: {
         display: 'flex',
       },
+      offset: theme.mixins.toolbar,
       appBar: {
         zIndex: theme.zIndex.drawer + 1,
         transition: theme.transitions.create(['width', 'margin'], {
@@ -89,39 +90,39 @@ export function Sidebar() {
     return (
         <React.Fragment>
             <AppBar
-                position="fixed"
+                position="sticky"
                 className={clsx(classes.appBar, {
-                [classes.appBarShift]: open,
+                    [classes.appBarShift]: open,
                 })}
             >
                 <Toolbar>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={handleDrawerOpen}
-                    edge="start"
-                    className={clsx(classes.menuButton, {
-                    [classes.hide]: open,
-                    })}
-                >
-                    <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" noWrap>
-                    Mini variant drawer
-                </Typography>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        className={clsx(classes.menuButton, {
+                        [classes.hide]: open,
+                        })}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" noWrap>
+                        Mini variant drawer
+                    </Typography>
                 </Toolbar>
             </AppBar>
             <Drawer
                 variant="permanent"
                 className={clsx(classes.drawer, {
-                [classes.drawerOpen]: open,
-                [classes.drawerClose]: !open,
-                })}
-                classes={{
-                paper: clsx({
                     [classes.drawerOpen]: open,
                     [classes.drawerClose]: !open,
-                }),
+                })}
+                classes={{
+                    paper: clsx({
+                        [classes.drawerOpen]: open,
+                        [classes.drawerClose]: !open,
+                    }),
                 }}
             >
                 <div className={classes.toolbar}>
