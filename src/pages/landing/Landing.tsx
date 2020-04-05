@@ -1,7 +1,8 @@
 import React from 'react';
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Particles from "../../components/particles/Particles";
-import Typist from 'react-typist';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import GreetingText from '../../components/greeting-text/GreetingText';
+import { selectGreeting } from '../../components/greeting-text/greetingSlice';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme:Theme) => createStyles({
     root: {
@@ -9,7 +10,7 @@ const useStyles = makeStyles((theme:Theme) => createStyles({
         height:'100vh',
         width:'100vw',
         justifyContent:'center',
-        alignItems:'flex-end'
+        alignItems:'center'
     },
     particles: {
         height:'100vh',
@@ -25,29 +26,22 @@ const useStyles = makeStyles((theme:Theme) => createStyles({
     content: {
         flex:1,
         textAlign:'center',
-        marginBottom:'15vh'
+    },
+    welcome: {
+        ...theme.typography.h2
     }
 }));
 
 export default function Hero() {
-    const classes = useStyles()
+    const classes = useStyles();
+    const greetingFinished = useSelector(selectGreeting);
+
     return (
         <div className={classes.root}>
-            <div className={classes.content}>
-                <Typist startDelay={1500} avgTypingDelay={100}>
-                    <Typist.Delay ms={500} />
-                    <span>Hi.</span>
-                    <Typist.Backspace count={3} delay={500} />
-                    <Typist.Delay ms={500} />
-                    <span>My name is Robin Kurosawa</span>
-                    <Typist.Backspace count={30} delay={500} />
-                    <Typist.Delay ms={500} />
-                    <span>Welcome to my site.</span>
-                </Typist>
-            </div>
-            <div className={classes.particles}>
-                <Particles/>
-            </div>
+            <GreetingText/>
+            {
+                greetingFinished && 'content'
+            }
         </div>
     )
 };

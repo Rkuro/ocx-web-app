@@ -73,7 +73,7 @@ export default function ParticlesComponent() {
     const clientWidth = window.innerWidth;
     const svgWidth = 636
     if (params.polygon != null) {
-        params.polygon.scale = (clientWidth / svgWidth) * 0.5;
+        params.polygon.scale = (clientWidth / svgWidth) * 0.9;
     }
     
     return (

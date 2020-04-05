@@ -1,6 +1,7 @@
 enum slices {
     COUNTER = 'counter',
-    NAV = 'nav'
+    NAV = 'nav',
+    GREETING = 'greeting'
 }
 
 
