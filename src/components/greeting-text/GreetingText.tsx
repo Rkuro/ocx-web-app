@@ -14,7 +14,7 @@ type greetingItem = {
 const greetings = [
     { id: 0, value: 'Hi.' },
     { id: 1, value: 'Welcome to OpenCreditX' },
-    { id: 2, value: null }
+    { id: 2, value: '' }
 ];
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -31,44 +31,53 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 export default function GreetingText() {
     const classes = useStyles();
     const [index, set] = useState(0);
-    const [cookies, setCookie] = useCookies(['greetingViewed']);
+    const [cookies, ] = useCookies(['greetingViewed']);
     const finished = useSelector(selectGreeting);
     const dispatch = useDispatch();
-    const transitions = useTransition(greetings[index], (item:greetingItem) => item.id, {
-        from: { opacity: 0},
-        enter: { opacity: 1, delay: 800},
-        leave: { opacity: 0},
-        unique: true,
-        config: {
-            ...config.gentle,
+    const transitions = useTransition(greetings[index], item=>item.id as any, {
+        from: {
+            opacity: 0
         },
+        enter: {
+            opacity:1
+        },
+        leave: {
+            opacity: 0,
+        },
+        config: config.gentle,
+        delay:1000,
+        unique: true,
         onDestroyed: (item) => {
+            console.log("ondestroy", item)
+            // @ts-ignore
             if (item.id === 1) {
-                dispatch(setFinished(true));
-                setCookie('greetingViewed', true);
+                dispatch(setFinished);
             }
         }
-    });
+    })
 
-    useEffect(() => void setInterval(() => set((state:number) => state < 2 ? state + 1 : state), 2500), []);
+    // useEffect(() => void setInterval(() => set((state:number) => state < 2 ? state + 1 : state), 2500), []);
+    useEffect(() => {
+        setTimeout(() => set(2), 2000);
+        setTimeout(()=> set(1), 3000);
+        setTimeout(()=>set(2), 5000);
+    }, [])
     if (finished || cookies.greetingViewed) return null;
     return (
         <>
             <div className={classes.root}>
                 {
-                    transitions.map(({item, props, key}) => {
+                    transitions.map(({item, key, props}) => {
                         return (
-                            <animated.div style={{
-                                position:'absolute',
-                                ...props
-                            }} key={key}>
+                            <animated.div key={key} style={props}>
                                 <Typography variant="h2">
                                     {item.value}
                                 </Typography>
                             </animated.div>
-                        );
+                        )
                     })
                 }
+                
             </div>
         </>
     );
