@@ -4,6 +4,7 @@ import { Typography } from '@material-ui/core';
 import { setFinished, selectGreeting } from './greetingSlice';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
+import { useCookies } from 'react-cookie';
 
 type greetingItem = {
     id: number,
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 export default function GreetingText() {
     const classes = useStyles();
     const [index, set] = useState(0);
+    const [cookies, setCookie] = useCookies(['greetingViewed']);
     const finished = useSelector(selectGreeting);
     const dispatch = useDispatch();
     const transitions = useTransition(greetings[index], (item:greetingItem) => item.id, {
@@ -43,12 +45,13 @@ export default function GreetingText() {
         onDestroyed: (item) => {
             if (item.id === 1) {
                 dispatch(setFinished(true));
+                setCookie('greetingViewed', true);
             }
         }
     });
 
     useEffect(() => void setInterval(() => set((state:number) => state < 2 ? state + 1 : state), 2500), []);
-    if (finished) return null;
+    if (finished || cookies.greetingViewed) return null;
     return (
         <>
             <div className={classes.root}>
