@@ -48,7 +48,7 @@ export default function GreetingText() {
         delay:1000,
         unique: true,
         onDestroyed: (item) => {
-            console.log("ondestroy", item)
+            // onDestroyed seems to have bad typing for the return object here
             // @ts-ignore
             if (item.id === 1) {
                 dispatch(setFinished);
