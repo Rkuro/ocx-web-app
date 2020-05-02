@@ -1,32 +1,36 @@
-import React, { useState } from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import MenuIcon from '@material-ui/icons/Menu';
-import { Hidden, AppBar, useScrollTrigger, Slide, Toolbar, IconButton, Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import Routes from '../../app/constants/routes';
+import React, { useState } from "react";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import MenuIcon from "@material-ui/icons/Menu";
+import {
+    Hidden,
+    AppBar,
+    useScrollTrigger,
+    Slide,
+    Toolbar,
+    IconButton,
+    Button,
+} from "@material-ui/core";
+// import { Link } from "react-router-dom";
+// import Routes from "../../app/constants/routes";
 
-
-const useNavStyles = makeStyles((theme: Theme) => createStyles({
-    root: {
-        
-    },
-    mobile: {
-
-    },
-    menuButton: {
-
-    },
-    nonMobile: {
-        backgroundColor:'transparent'
-    },
-    nonMobileToolbar: {
-        display:'flex',
-        justifyContent:'flex-end'
-    }
-}))
+const useNavStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {},
+        mobileRoot: {},
+        mobileAppBar: {},
+        menuButton: {},
+        nonMobileRoot: {},
+        nonMobileAppBar: {
+            backgroundColor: "transparent",
+        },
+        nonMobileToolbar: {
+            display: "flex",
+            justifyContent: "flex-end",
+        },
+    })
+);
 
 export default function Nav() {
-
     const classes = useNavStyles();
 
     return (
@@ -34,11 +38,11 @@ export default function Nav() {
             <div className={classes.root}>
                 {/* Mobile Nav */}
                 <Hidden mdUp>
-                    <MobileNav/>
+                    <MobileNav />
                 </Hidden>
                 {/* Non-Mobile Nav */}
                 <Hidden smDown>
-                    <NonMobileNav/>
+                    <NonMobileNav />
                 </Hidden>
             </div>
         </>
@@ -51,19 +55,18 @@ function HideOnScroll(props: any) {
 
     return (
         <Slide appear={false} direction={props.direction} in={!trigger}>
-        {children}
+            {children}
         </Slide>
     );
 }
 
 function MobileNav() {
     const classes = useNavStyles();
-    const [open, ] = useState(false);
+    const [open] = useState(false);
     return (
         <>
             <HideOnScroll direction={"down"}>
-                <AppBar>
-                    
+                <AppBar className={classes.mobileAppBar}>
                     <Toolbar>
                         <IconButton
                             edge="start"
@@ -73,33 +76,28 @@ function MobileNav() {
                         >
                             <MenuIcon />
                         </IconButton>
-
-                        
                     </Toolbar>
 
-                    {
-                        open && 'content!'
-                    }
-
+                    {open && "content!"}
                 </AppBar>
             </HideOnScroll>
         </>
     );
 }
 
-
 function NonMobileNav() {
     const classes = useNavStyles();
     return (
         <>
-            <div>
-                <Link to={Routes.AUTH}>
-                    <AppBar className={classes.nonMobile}>
-                        <Toolbar variant="dense" className={classes.nonMobileToolbar}>
-                            <Button>Login</Button>
-                        </Toolbar>
-                    </AppBar>
-                </Link>
+            <div className={classes.nonMobileRoot}>
+                <AppBar className={classes.nonMobileAppBar} position="sticky">
+                    <Toolbar
+                        variant="dense"
+                        className={classes.nonMobileToolbar}
+                    >
+                        <Button>Login</Button>
+                    </Toolbar>
+                </AppBar>
             </div>
         </>
     );

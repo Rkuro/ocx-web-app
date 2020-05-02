@@ -4,7 +4,6 @@ export interface CookieState {
     greetingViewed?: boolean;
 }
 
-
 export default class AppCookies {
     public cookies: Cookies;
     constructor(cookies: Cookies) {

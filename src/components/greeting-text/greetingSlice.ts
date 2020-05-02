@@ -1,14 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
-import slices from '../../app/constants/slices';
-
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
+import slices from "../../app/constants/slices";
 
 interface GreetingState {
     finished: boolean;
 }
 
 const initialState: GreetingState = {
-  finished: false
+    finished: false,
 };
 
 export const slice = createSlice({
@@ -17,6 +16,7 @@ export const slice = createSlice({
     reducers: {
         // Use the PayloadAction type to declare the contents of `action.payload`
         setFinished: (state, action: PayloadAction<boolean>) => {
+            console.log("set finished called!");
             state.finished = action.payload;
         },
     },
@@ -24,11 +24,10 @@ export const slice = createSlice({
 
 export const { setFinished } = slice.actions;
 
-
 // The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
+// the state. Selectors can also be defined inline where they"re used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectGreeting = (state: RootState) =>{
+export const selectGreeting = (state: RootState) => {
     return state.greeting.finished;
 };
 

@@ -1,10 +1,9 @@
 enum slices {
-    COUNTER = 'counter',
-    NAV = 'nav',
-    GREETING = 'greeting',
-    AUTH = 'auth',
-    APP = 'app'
+    COUNTER = "counter",
+    NAV = "nav",
+    GREETING = "greeting",
+    AUTH = "auth",
+    APP = "app",
 }
 
-
-export default slices
+export default slices;

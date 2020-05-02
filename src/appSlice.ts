@@ -1,44 +1,50 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { IUser } from "./app/auth/user";
-import { readUser } from "./app/api/index"
+import { reAuthenticate } from "./app/api/index";
 import slices from "./app/constants/slices";
 import { RootState } from "./app/store";
-
+import LOADING_STATES from "./app/constants/loading";
 
 const initialAppState = {
-    appState: {},
-    loading: 'idle'
-}
+    appState: {
+        user: {},
+        token: "",
+    },
+    loading: "idle",
+};
 
-export const fetchUserById = createAsyncThunk<IUser, string>(
-    'app/fetchInitialState',
-    async (userId, thunkAPI) => {
-        console.log("fetchuserbyid called!")
-        const response = await readUser(userId)
-        return response.data
+export const reAuthenticateThunk = createAsyncThunk<any, undefined>(
+    "user/reauthenticate",
+    async (arg, thunkApi) => {
+        console.log("arg", arg);
+        console.log("thunkApi", thunkApi);
+        const response = await reAuthenticate();
+        console.log("response:", response);
+        return response.data;
     }
-)
+);
 
 const appSlice = createSlice({
     name: slices.APP,
     initialState: initialAppState,
-    reducers: {
-
-    },
+    reducers: {},
     extraReducers: {
-        [fetchUserById.fulfilled.name]: (state, action) => {
-            console.log("fetch user fulfilled!", state, action)
+        [reAuthenticateThunk.fulfilled as any]: (state, action) => {
+            console.log("Authenticate reducer fulfilled,", state, action);
+            state.loading = LOADING_STATES.fulfilled;
         },
-        [fetchUserById.rejected.name]: (state, action) => {
-            console.log("fetch user rejected!", state, action)
-        }
-    }
-})
+        [reAuthenticateThunk.rejected as any]: (state, action) => {
+            console.log("Authenticate reducer rejected,", state, action);
+            state.loading = LOADING_STATES.error;
+        },
+        [reAuthenticateThunk.pending as any]: (state, action) => {
+            console.log("Authenticate reducer pending,", state, action);
+            state.loading = LOADING_STATES.pending;
+        },
+    },
+});
 
-export const selectInitialState = (state: RootState) =>{
-    return state.app.appState;
-}
-
-
+export const selectInitialState = (state: RootState) => {
+    return state.app;
+};
 
 export default appSlice.reducer;

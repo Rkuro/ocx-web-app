@@ -1,10 +1,8 @@
-import { readUser } from "./api"
-import { Cookies } from "react-cookie";
+/**
+ * Run any functions on app startup
+ */
+import logger from "../logger";
 
-export default async function initializeStore(cookies: {[name:string]:any}) {
-    
-    const userToken = cookies.token
-
-    
-
+export default async function init(): Promise<void> {
+    logger.info("App Startup - running initialization functions");
 }
