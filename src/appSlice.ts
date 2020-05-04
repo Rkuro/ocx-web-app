@@ -3,25 +3,39 @@ import { reAuthenticate } from "./app/api/index";
 import slices from "./app/constants/slices";
 import { RootState } from "./app/store";
 import LOADING_STATES from "./app/constants/loading";
+import { AuthenticationResult } from "@feathersjs/authentication/lib";
+import { User } from "./app/types/User";
+
+interface AppState {
+    appState: {
+        user?: User;
+    };
+    loading: boolean;
+}
 
 const initialAppState = {
     appState: {
-        user: {},
+        user: undefined,
         token: "",
     },
     loading: "idle",
 };
 
-export const reAuthenticateThunk = createAsyncThunk<any, undefined>(
-    "user/reauthenticate",
-    async (arg, thunkApi) => {
-        console.log("arg", arg);
-        console.log("thunkApi", thunkApi);
-        const response = await reAuthenticate();
-        console.log("response:", response);
-        return response.data;
+export const reAuthenticateThunk = createAsyncThunk<
+    AuthenticationResult,
+    undefined,
+    {
+        extra: {
+            jwt: string;
+        };
     }
-);
+>("user/reauthenticate", async (arg, thunkApi) => {
+    console.log("arg", arg);
+    console.log("thunkApi", thunkApi);
+    const response = await reAuthenticate();
+    console.log("response:", response);
+    return response.data;
+});
 
 const appSlice = createSlice({
     name: slices.APP,

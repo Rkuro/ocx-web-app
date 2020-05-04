@@ -21,22 +21,22 @@ const initialState: AuthState = {
     },
 };
 
+interface CheckUserExistsPayload {
+    email: string;
+}
+
+// export const checkUserExists = createAsyncThunk<
+//     boolean,
+//     CheckUserExistsPayload
+// >("user/checkExists", async (payload, thunkApi) => {
+//     // console.log("thunkApi", thunkApi);
+
+// });
+
 export const authSlice = createSlice({
     name: slices.AUTH,
     initialState,
     reducers: {
-        createUser: (state, action: PayloadAction<AuthState>) => {
-            throw new Error("Not implemented");
-        },
-        readUser: (state, action: PayloadAction<AuthState>) => {
-            console.log("Reading user!", state, action);
-        },
-        updateUser: (state, action: PayloadAction<AuthState>) => {
-            throw new Error("Not implemented");
-        },
-        deleteUser: (state, action: PayloadAction<AuthState>) => {
-            throw new Error("Not implemented");
-        },
         updateStage: (state, action: PayloadAction<AuthStage>) => {
             state.meta.stage = action.payload;
         },
@@ -46,7 +46,7 @@ export const authSlice = createSlice({
 
 export const { updateStage } = authSlice.actions;
 
-export const selectAuth = (state: RootState) => {
+export const selectAuth = (state: RootState): AuthState => {
     return state.auth;
 };
 

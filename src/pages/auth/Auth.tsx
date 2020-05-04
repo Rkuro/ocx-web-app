@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Nav from "../../components/nav/Nav";
 import { makeStyles, createStyles, Theme } from "@material-ui/core";
 import FormStepContainer from "../../components/form-step-container/FormStepContainer";
@@ -29,7 +29,7 @@ const renderSwitch = (stage: AuthStage) => {
         case AuthStage.LANDING:
             return <AuthStageLanding />;
         case AuthStage.EMAIL:
-            return;
+            return <AuthStageEmail />;
         default:
             return null;
     }

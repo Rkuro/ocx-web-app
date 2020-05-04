@@ -1,3 +1,4 @@
+import theme from "../../theme";
 interface ConstantWidths {
     drawerWidth: 240;
 }
@@ -9,6 +10,10 @@ const pageStyle = {
     height: "100vh",
 };
 
-export { pageStyle };
+const OAuthButtonStyle = {
+    padding: theme.spacing(2),
+};
+
+export { pageStyle, OAuthButtonStyle };
 
 export default ConstantWidths;

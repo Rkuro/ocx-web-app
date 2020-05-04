@@ -2,10 +2,14 @@ import React from "react";
 import { Button, makeStyles, createStyles, Theme } from "@material-ui/core";
 import GithubLogo from "../../assets/github/GitHub-Logos/GitHub_Logo_White.png";
 import GithubMark from "../../assets/github/GitHub-Mark/PNG/GitHub-Mark-Light-32px.png";
+import { OAuthButtonStyle } from "../../app/constants/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        root: {
+        button: {
+            ...OAuthButtonStyle,
+        },
+        content: {
             display: "flex",
             justifyContent: "center",
             flex: "1",
@@ -13,17 +17,19 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         logo: {
             maxWidth: "63px",
-            margin: "0 20px",
+            margin: "0 10px",
         },
-        mark: {},
+        mark: {
+            margin: "0 10px",
+        },
     })
 );
 
 export const OAuthButtonGithub: React.FunctionComponent = (props) => {
     const classes = useStyles();
     return (
-        <Button>
-            <div className={classes.root}>
+        <Button className={classes.button}>
+            <div className={classes.content}>
                 <img
                     className={classes.logo}
                     alt="Github Logo"

@@ -12,8 +12,8 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { OAuthButtonGoogle, OAuthButtonGithub } from "../../../components/";
-import { useSelector, useDispatch } from "react-redux";
-import { selectAuth, updateStage, AuthStage } from "../authSlice";
+import { useDispatch } from "react-redux";
+import { updateStage, AuthStage } from "../authSlice";
 
 interface SelectAuthType {
     payload: AuthStage;
@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         prompt: {
             textAlign: "center",
+            paddingBottom: theme.spacing(2),
         },
         oauthExpansionContainer: {
             width: "100%",
@@ -71,7 +72,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const AuthStageLanding: React.FunctionComponent = (props) => {
     const classes = useStyles();
-    const authState = useSelector(selectAuth);
     const dispatch = useDispatch();
 
     return (
@@ -79,6 +79,7 @@ const AuthStageLanding: React.FunctionComponent = (props) => {
             <Typography className={classes.prompt} variant="h5">
                 How would you like to authenticate?
             </Typography>
+            <Divider flexItem />
 
             <div className={classes.emailButtonContainer}>
                 <Button
