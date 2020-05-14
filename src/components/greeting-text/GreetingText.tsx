@@ -3,14 +3,14 @@ import React, { useState, useEffect } from "react";
 import { animated, useTransition, config } from "react-spring";
 import { Typography } from "@material-ui/core";
 import { setFinished, selectGreeting } from "./greetingSlice";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { useCookies } from "react-cookie";
 
-type greetingItem = {
+interface GreetingItem {
     id: number;
-    value?: string | null;
-};
+    value: string;
+}
 
 const greetings = [
     { id: 0, value: "Hi." },
@@ -18,7 +18,7 @@ const greetings = [
     { id: 2, value: "" },
 ];
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
             textAlign: "center",
@@ -31,38 +31,35 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export default function GreetingText() {
+const GreetingText: React.FunctionComponent = () => {
     const classes = useStyles();
     const [index, set] = useState(0);
-    const [cookies] = useCookies(["greetingViewed"]);
+    const [cookies, setCookie] = useCookies(["greetingViewed"]);
     const finished = useSelector(selectGreeting);
     const dispatch = useDispatch();
-    const transitions = useTransition(
-        greetings[index],
-        (item) => item.id as any,
-        {
-            from: {
-                opacity: 0,
-            },
-            enter: {
-                opacity: 1,
-            },
-            leave: {
-                opacity: 0,
-            },
-            config: config.gentle,
-            delay: 1000,
-            unique: true,
-            onDestroyed: (item) => {
-                // onDestroyed seems to have bad typing for the return object here
-                // @ts-ignore
-                if (item.id === 1) {
-                    console.log("Destroying!");
-                    dispatch(setFinished(true));
-                }
-            },
-        }
-    );
+    const transitions = useTransition(greetings[index], (item) => item.id, {
+        from: {
+            opacity: 0,
+        },
+        enter: {
+            opacity: 1,
+        },
+        leave: {
+            opacity: 0,
+        },
+        config: config.gentle,
+        delay: 1000,
+        unique: true,
+        onDestroyed: (item) => {
+            // onDestroyed seems to have bad typing for the return object here
+            // @ts-ignore
+            if (item.id === 1) {
+                console.log("Destroying!");
+                dispatch(setFinished(true));
+                setCookie("greetingViewed", true);
+            }
+        },
+    });
 
     useEffect(() => {
         setTimeout(() => set(2), 2000);
@@ -83,4 +80,6 @@ export default function GreetingText() {
             </div>
         </>
     );
-}
+};
+
+export default GreetingText;

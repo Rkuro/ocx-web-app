@@ -30,10 +30,11 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         prompt: {
             textAlign: "center",
-            paddingBottom: theme.spacing(2),
+            paddingBottom: theme.spacing(4),
         },
         oauthExpansionContainer: {
             width: "100%",
+            backgroundColor: "transparent",
         },
         oauthExpansionSummary: {
             border: `1px solid ${theme.palette.secondary.main}`,
@@ -49,17 +50,18 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: "center",
             alignItems: "center",
             width: "100%",
+            marginLeft: "36px",
         },
         oauthButtonPanel: {
             display: "flex",
             justifyContent: "center",
             flexDirection: "column",
         },
-        emailButtonContainer: {
+        authButtonContainer: {
             width: "100%",
             marginBottom: "20px",
         },
-        emailButton: {
+        authButton: {
             width: "100%",
             border: `1px solid ${theme.palette.secondary.main}`,
             padding: "12px",
@@ -81,15 +83,27 @@ const AuthStageLanding: React.FunctionComponent = (props) => {
             </Typography>
             <Divider flexItem />
 
-            <div className={classes.emailButtonContainer}>
+            <div className={classes.authButtonContainer}>
                 <Button
                     variant={"outlined"}
-                    className={classes.emailButton}
+                    className={classes.authButton}
                     onClick={(): SelectAuthType =>
-                        dispatch(updateStage(AuthStage.EMAIL))
+                        dispatch(updateStage(AuthStage.SIGNUP))
                     }
                 >
-                    Use Email
+                    SIGNUP
+                </Button>
+            </div>
+
+            <div className={classes.authButtonContainer}>
+                <Button
+                    variant={"outlined"}
+                    className={classes.authButton}
+                    onClick={(): SelectAuthType =>
+                        dispatch(updateStage(AuthStage.LOGIN))
+                    }
+                >
+                    LOGIN
                 </Button>
             </div>
 

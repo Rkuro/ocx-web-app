@@ -4,27 +4,25 @@ import "./App.css";
 // import { useCookies } from 'react-cookie';
 // import initializeStore from './app/init';
 import { useDispatch, useSelector } from "react-redux";
-import { reAuthenticateThunk, selectInitialState } from "./appSlice";
 import { LoaderFull } from "./components";
+import { selectAuth, reAuthenticateThunk } from "./pages/auth/authSlice";
 
-function App() {
-    // const [cookies, setCookie] = useCookies();
+const App: React.FunctionComponent = () => {
     const dispatch = useDispatch();
-    const appState = useSelector(selectInitialState);
+    const authState = useSelector(selectAuth);
 
     // Run functions on app startup
     useEffect(() => {
         dispatch(reAuthenticateThunk());
     }, [dispatch]);
-    console.log("appstate", appState);
     return (
         <React.Fragment>
-            <LoaderFull open={appState.loading === "loading"} />
+            <LoaderFull open={authState.loading} />
             <div className="App">
                 <Router />
             </div>
         </React.Fragment>
     );
-}
+};
 
 export default App;

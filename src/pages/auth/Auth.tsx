@@ -1,20 +1,13 @@
 import React from "react";
-import Nav from "../../components/nav/Nav";
-import { makeStyles, createStyles, Theme } from "@material-ui/core";
-import FormStepContainer from "../../components/form-step-container/FormStepContainer";
+import { makeStyles, createStyles } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { selectAuth, AuthStage } from "./authSlice";
 import AuthStageLanding from "./stages/AuthStageLanding";
-import AuthStageEmail from "./stages/AuthStageEmail";
-import { pageStyle } from "../../app/constants/styles";
+import AuthStageLogin from "./stages/AuthStageLogin";
+import { PageContainer, Panel } from "../../components";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
-        page: {
-            ...pageStyle,
-            display: "flex",
-            flexDirection: "column",
-        },
         root: {
             flex: "1",
             display: "flex",
@@ -24,37 +17,33 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-const renderSwitch = (stage: AuthStage) => {
+const renderSwitch = (stage: AuthStage): React.ReactNode => {
     switch (stage) {
         case AuthStage.LANDING:
             return <AuthStageLanding />;
-        case AuthStage.EMAIL:
-            return <AuthStageEmail />;
+        case AuthStage.LOGIN:
+            return <AuthStageLogin />;
         default:
             return null;
     }
 };
 
-export default function Auth() {
+const Auth: React.FunctionComponent = () => {
     const classes = useStyles();
     const auth = useSelector(selectAuth);
-    // const match = useRouteMatch();
-    // const dispatch = useDispatch();
-
-    // useEffect(() => {}, []);
-
     console.log("Auth State:", auth);
 
     return (
         <>
-            <div className={classes.page}>
-                <Nav />
+            <PageContainer nav flex>
                 <div className={classes.root}>
-                    <FormStepContainer>
+                    <Panel corners inlineCorners borderBottom borderTop>
                         {renderSwitch(auth.meta.stage)}
-                    </FormStepContainer>
+                    </Panel>
                 </div>
-            </div>
+            </PageContainer>
         </>
     );
-}
+};
+
+export default Auth;
