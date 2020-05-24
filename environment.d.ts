@@ -1,9 +1,9 @@
 declare global {
-  namespace NodeJS {
-    interface ProcessEnv {
-      API_ENDPOINT_URL: string;
+    namespace NodeJS {
+        interface ProcessEnv {
+            API_ENDPOINT_URL: string;
+        }
     }
-  }
 }
 
 export {};

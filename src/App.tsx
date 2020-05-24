@@ -17,7 +17,7 @@ const App: React.FunctionComponent = () => {
     }, [dispatch]);
     return (
         <React.Fragment>
-            <LoaderFull open={authState.loading} />
+            {authState.loading && <LoaderFull open={authState.loading} />}
             <div className="App">
                 <Router />
             </div>

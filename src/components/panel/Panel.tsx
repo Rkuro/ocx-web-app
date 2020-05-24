@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core";
 import clsx from "clsx";
 import hexToRgba from "hex-to-rgba";
 import { themeExtras } from "../../theme";
+import { motion, MotionProps } from "framer-motion";
+import { runFunctionsOnTimeout } from "../../utils/TimeoutUtils";
+import { mapValue, mapValues } from "../../utils/ValueMapping";
+import { useFlickerAnimations } from "../../utils/AnimationGenerators";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -13,6 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 0.5
             )}, 70%, ${hexToRgba(theme.palette.primary.light, 0.5)})`,
             padding: theme.spacing(4),
+            minWidth: "300px",
         },
         borderTop: {
             borderTop: `2px solid ${themeExtras.border}`,
@@ -64,57 +69,85 @@ interface PanelProps {
     corners?: boolean;
     borderTop?: boolean;
     borderBottom?: boolean;
+    panelMotion?: MotionProps;
+    cornersMotion?: MotionProps;
 }
 
 const Panel: React.FunctionComponent<PanelProps> = (props) => {
     const classes = useStyles();
+    // const opacities = generateFlickerOpacities();
+
+    const { opacities, times } = useFlickerAnimations();
+
+    const animate = {
+        opacity: opacities,
+    };
+
+    const transition = {
+        duration: 1,
+        times: times,
+    };
 
     return (
-        <div
+        <motion.div
             className={clsx({
                 [classes.container]: true,
                 [classes.borderBottom]: props.borderBottom,
                 [classes.borderTop]: props.borderTop,
             })}
+            animate={animate}
+            transition={transition}
+            {...props.panelMotion}
         >
             {props.corners && <PanelCorners {...props} />}
             {props.children}
-        </div>
+        </motion.div>
     );
 };
 
+/**
+ * helper function: return whether or not it should be inlined
+ */
+const fetchContainmentStatus = (
+    containmentType: string,
+    corner: string,
+    inline?: boolean
+): boolean => {
+    const cornerType = corner.includes("top") ? "top" : "bottom";
+    if (cornerType != containmentType) return false;
+    return Boolean(inline);
+};
+
+// Work clockwise starting from the top left
 const PanelCorners: React.FunctionComponent<PanelProps> = (props) => {
     const classes = useStyles();
+    const corners = ["topLeft", "topRight", "bottomRight", "bottomLeft"];
+
     return (
         <>
-            <div
-                className={clsx({
-                    [classes.common]: true,
-                    [classes.topLeft]: true,
-                    [classes.topContained]: props.inlineCorners,
-                })}
-            />
-            <div
-                className={clsx({
-                    [classes.common]: true,
-                    [classes.topRight]: true,
-                    [classes.topContained]: props.inlineCorners,
-                })}
-            />
-            <div
-                className={clsx({
-                    [classes.common]: true,
-                    [classes.bottomRight]: true,
-                    [classes.bottomContained]: props.inlineCorners,
-                })}
-            />
-            <div
-                className={clsx({
-                    [classes.common]: true,
-                    [classes.bottomLeft]: true,
-                    [classes.bottomContained]: props.inlineCorners,
-                })}
-            />
+            {corners.map((corner) => {
+                const cornerKey = classes[corner];
+                return (
+                    <motion.div
+                        key={`${corner}-corner`}
+                        className={clsx({
+                            [classes.common]: true,
+                            [cornerKey]: true,
+                            [classes.topContained]: fetchContainmentStatus(
+                                "top",
+                                corner,
+                                props.inlineCorners
+                            ),
+                            [classes.bottomContained]: fetchContainmentStatus(
+                                "bottom",
+                                corner,
+                                props.inlineCorners
+                            ),
+                        })}
+                        {...props.cornersMotion}
+                    />
+                );
+            })}
         </>
     );
 };

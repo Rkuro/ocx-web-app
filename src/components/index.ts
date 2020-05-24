@@ -1,9 +1,8 @@
-import GreetingText from "./greeting-text/GreetingText";
+import GreetingText from "./animated/greeting-text/GreetingText";
 import LoaderFull from "./loader-full/LoaderFull";
 import Nav from "./nav/Nav";
 import PageContainer from "./page-container/PageContainer";
 import Panel from "./panel/Panel";
-import TransitionButton from "./transition-button/TransitionButton";
 
 import {
     OAuthButtonGoogle,
@@ -20,5 +19,6 @@ export {
     Nav,
     PageContainer,
     Panel,
-    TransitionButton,
 };
+
+export * from "./animated";

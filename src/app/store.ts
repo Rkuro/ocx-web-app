@@ -4,7 +4,7 @@
  */
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import navReducer from "../components/nav/navSlice";
-import greetingReducer from "../components/greeting-text/greetingSlice";
+import greetingReducer from "../components/animated/greeting-text/greetingSlice";
 import authReducer from "../pages/auth/authSlice";
 import appReducer from "../appSlice";
 

@@ -1,96 +1,99 @@
 {
-  "name": "ocx-web-app",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@feathersjs/authentication": "^4.5.3",
-    "@feathersjs/authentication-client": "^4.5.4",
-    "@feathersjs/client": "^4.5.4",
-    "@feathersjs/feathers": "^4.5.3",
-    "@feathersjs/rest-client": "^4.5.4",
-    "@material-ui/core": "^4.9.12",
-    "@material-ui/icons": "^4.9.1",
-    "@reduxjs/toolkit": "^1.3.5",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/lodash": "^4.14.150",
-    "@types/mocha": "^7.0.2",
-    "@types/moment-timezone": "^0.5.12",
-    "@types/node": "^12.12.37",
-    "@types/react": "^16.9.23",
-    "@types/react-dom": "^16.9.7",
-    "@types/react-redux": "^7.1.7",
-    "@types/react-router-dom": "^5.1.5",
-    "@types/react-typist": "^2.0.1",
-    "acorn": "^7.1.1",
-    "axios": "^0.19.2",
-    "dotenv": "^8.2.0",
-    "hex-to-rgba": "^2.0.1",
-    "immutable": "^4.0.0-rc.12",
-    "inversify": "^5.0.1",
-    "lodash": "^4.17.15",
-    "minimalist": "^1.0.0",
-    "minimist": "^1.2.3",
-    "react": "^16.13.0",
-    "react-awesome-reveal": "^2.4.2",
-    "react-cookie": "^4.0.3",
-    "react-dom": "^16.13.0",
-    "react-flicker": "^1.1.1",
-    "react-particles-js": "^2.7.1",
-    "react-redux": "^7.2.0",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0",
-    "react-spring": "^8.0.27",
-    "react-transition-group": "^4.4.1",
-    "react-typist": "^2.0.5",
-    "reflect-metadata": "^0.1.13",
-    "typescript": "~3.8.2",
-    "winston": "^3.2.1"
-  },
-  "scripts": {
-    "dev": "HTTPS=true npm start",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "deploy": "yarn build && aws s3 sync build/ s3://ocx-web-app --delete",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@svgr/cli": "^5.4.0",
-    "@typescript-eslint/eslint-plugin": "^2.30.0",
-    "@typescript-eslint/parser": "^2.30.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.3",
-    "eslint-plugin-react": "^7.19.0",
-    "husky": "^4.2.5",
-    "prettier": "^2.0.5"
-  },
-  "husky": {
-    "hooks": {}
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx}": [
-      "eslint --fix"
-    ]
-  },
-  "prettier": {
-    "tabWidth": 4
-  }
+    "name": "ocx-web-app",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@feathersjs/authentication": "^4.5.3",
+        "@feathersjs/authentication-client": "^4.5.4",
+        "@feathersjs/client": "^4.5.4",
+        "@feathersjs/feathers": "^4.5.3",
+        "@feathersjs/rest-client": "^4.5.4",
+        "@material-ui/core": "^4.9.12",
+        "@material-ui/icons": "^4.9.1",
+        "@reduxjs/toolkit": "^1.3.5",
+        "@testing-library/react": "^9.3.2",
+        "@testing-library/user-event": "^7.1.2",
+        "@types/lodash": "^4.14.150",
+        "@types/mocha": "^7.0.2",
+        "@types/moment-timezone": "^0.5.12",
+        "@types/node": "^12.12.37",
+        "@types/react": "^16.9.23",
+        "@types/react-dom": "^16.9.7",
+        "@types/react-redux": "^7.1.7",
+        "@types/react-router-dom": "^5.1.5",
+        "@types/react-typist": "^2.0.1",
+        "acorn": "^7.1.1",
+        "axios": "^0.19.2",
+        "bezier-easing": "^2.1.0",
+        "dotenv": "^8.2.0",
+        "framer-motion": "^1.11.0",
+        "hex-to-rgba": "^2.0.1",
+        "immutable": "^4.0.0-rc.12",
+        "inversify": "^5.0.1",
+        "lodash": "^4.17.15",
+        "map-range": "^0.1.2",
+        "minimalist": "^1.0.0",
+        "minimist": "^1.2.3",
+        "react": "^16.13.0",
+        "react-awesome-reveal": "^2.4.2",
+        "react-cookie": "^4.0.3",
+        "react-dom": "^16.13.0",
+        "react-flicker": "^1.1.1",
+        "react-particles-js": "^2.7.1",
+        "react-redux": "^7.2.0",
+        "react-router-dom": "^5.1.2",
+        "react-scripts": "3.4.0",
+        "react-spring": "^8.0.27",
+        "react-transition-group": "^4.4.1",
+        "react-typist": "^2.0.5",
+        "reflect-metadata": "^0.1.13",
+        "typescript": "~3.8.2",
+        "winston": "^3.2.1"
+    },
+    "scripts": {
+        "dev": "HTTPS=true npm start",
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "deploy": "yarn build && aws s3 sync build/ s3://ocx-web-app --delete",
+        "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@svgr/cli": "^5.4.0",
+        "@typescript-eslint/eslint-plugin": "^2.30.0",
+        "@typescript-eslint/parser": "^2.30.0",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-plugin-prettier": "^3.1.3",
+        "eslint-plugin-react": "^7.19.0",
+        "husky": "^4.2.5",
+        "prettier": "^2.0.5"
+    },
+    "husky": {
+        "hooks": {}
+    },
+    "lint-staged": {
+        "*.{js,ts,tsx}": [
+            "eslint --fix"
+        ]
+    },
+    "prettier": {
+        "tabWidth": 4
+    }
 }

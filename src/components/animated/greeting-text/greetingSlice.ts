@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
-import slices from "../../app/constants/slices";
+import { RootState } from "../../../app/store";
+import slices from "../../../app/constants/slices";
 
 interface GreetingState {
     finished: boolean;
