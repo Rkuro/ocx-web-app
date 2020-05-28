@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
 import { Typography, Theme } from "@material-ui/core";
 import { makeStyles, createStyles } from "@material-ui/styles";
 import clsx from "clsx";
@@ -12,17 +12,26 @@ const useStyles = makeStyles((theme: Theme) =>
             display: "flex",
             listStyle: "none",
         },
-        listItem: {
+        default: {
             color: theme.palette.secondary.main,
         },
         spaceLetter: {
             padding: "0.1em",
+        },
+        error: {
+            color: theme.palette.error.main,
+        },
+        success: {
+            color: theme.palette.success.main,
         },
     })
 );
 
 interface BouncingLettersProps {
     string: string;
+    active?: boolean;
+    error?: boolean;
+    success?: boolean;
 }
 
 const BouncingLetters: React.FunctionComponent<BouncingLettersProps> = (
@@ -33,35 +42,45 @@ const BouncingLetters: React.FunctionComponent<BouncingLettersProps> = (
     const letters = props.string.split("");
     const indices = letters.map((l, i) => i);
     const valueMapper = useMapper(indices);
-
-    const [variant, setVariant] = useState("start");
+    const [intervalId, setIntervalId] = useState(-1);
+    const [variant, setVariant] = useState("end");
 
     const listVariants = {
-        stop: {
+        begin: {
             // transform: "translate3d(0, 15px, 0)",
         },
-        start: {
+        end: {
             transform: ["translate3d(0, 15px, 0)", "translate3d(0, 0px, 0"],
             transition: {
-                // staggerChildren: 0.1,
                 ease: [0, 0.5, 0.18, 1],
                 duration: bezier(valueMapper(indices.length)) * 2,
             },
         },
+        idle: {},
     };
 
     function handleReset(): void {
         setVariant((currentVariant) =>
-            currentVariant === "start" ? "stop" : "start"
+            currentVariant === "begin" ? "end" : "begin"
         );
     }
 
+    // Catch when active changes
     useEffect(() => {
-        setInterval(() => handleReset(), 3000);
+        if (!props.active) {
+            clearInterval(intervalId);
+        }
+    }, [props.active, intervalId]);
+
+    // Handle the animation reset
+    useEffect(() => {
+        const interval: number = window.setInterval(() => handleReset(), 3000);
+        setIntervalId(interval);
+        return (): void => clearInterval(interval);
     }, []);
 
     const letterVariant = {
-        stop: (index: number): object => {
+        begin: (index: number): object => {
             return {
                 opacity: [1, 0],
                 transition: {
@@ -70,7 +89,7 @@ const BouncingLetters: React.FunctionComponent<BouncingLettersProps> = (
                 },
             };
         },
-        start: (index: number): object => {
+        end: (index: number): object => {
             return {
                 opacity: [0, 1],
                 transform: [
@@ -84,6 +103,14 @@ const BouncingLetters: React.FunctionComponent<BouncingLettersProps> = (
                 },
             };
         },
+        idle: {
+            opacity: 1,
+            transform: "translate3d(0,0,0)",
+        },
+    };
+
+    const exit = {
+        opacity: 0,
     };
 
     return (
@@ -91,7 +118,7 @@ const BouncingLetters: React.FunctionComponent<BouncingLettersProps> = (
             <motion.ul
                 className={classes.container}
                 variants={listVariants}
-                initial="stop"
+                initial="begin"
                 animate={variant}
             >
                 {letters.map((letter, index) => (
@@ -99,13 +126,18 @@ const BouncingLetters: React.FunctionComponent<BouncingLettersProps> = (
                         key={index}
                         custom={index}
                         variants={letterVariant}
-                        className={classes.listItem}
+                        animate={props.active ? variant : "idle"}
+                        exit={exit}
                     >
                         <Typography
                             className={clsx({
                                 [classes.spaceLetter]: letter === " ",
+                                [classes.error]: props.error,
+                                [classes.success]: props.success,
+                                [classes.default]:
+                                    !props.error && !props.success,
                             })}
-                            variant="h3"
+                            variant="h4"
                         >
                             {letter.toUpperCase()}
                         </Typography>

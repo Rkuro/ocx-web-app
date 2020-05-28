@@ -21,7 +21,7 @@ const useStyles = makeStyles(() =>
 );
 
 interface PageContainerProps {
-    nav: boolean;
+    nav?: boolean;
     flex?: boolean;
     styles?: React.CSSProperties;
 }
@@ -29,7 +29,11 @@ interface PageContainerProps {
 const PageContainer: React.FunctionComponent<PageContainerProps> = (props) => {
     const classes = useStyles();
     return (
-        <div className={classes.page}>
+        <div
+            className={clsx({
+                [classes.page]: true,
+            })}
+        >
             {props.nav && (
                 <div>
                     <Nav />

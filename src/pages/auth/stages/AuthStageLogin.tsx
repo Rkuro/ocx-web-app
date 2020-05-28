@@ -41,8 +41,8 @@ const useStyles = makeStyles((theme: Theme) =>
 const AuthStageLogin: React.FunctionComponent = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const [emailInput, setEmailInput] = useState("");
-    const [passwordInput, setPasswordInput] = useState("");
+    const [emailInput] = useState("");
+    // const [passwordInput, setPasswordInput] = useState("");
 
     return (
         <>

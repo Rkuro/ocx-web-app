@@ -7,7 +7,6 @@ import {
     AuthenticationRequest,
     AuthenticationResult,
 } from "@feathersjs/authentication/lib";
-import LOADING_STATE from "../../app/constants/loading";
 import { User } from "../../app/types";
 
 export enum AuthStage {
@@ -16,7 +15,7 @@ export enum AuthStage {
     SIGNUP = "SIGNUP",
 }
 
-interface AuthState {
+export interface AuthState {
     meta: {
         stage: AuthStage;
     };
@@ -83,16 +82,17 @@ export const authSlice = createSlice({
     },
     extraReducers: {
         [reAuthenticateThunk.fulfilled as any]: (state, action): void => {
-            // console.log("Authenticate reducer fulfilled,", state, action);
+            console.log("Authenticate reducer fulfilled,", state, action);
             state.loading = false;
         },
         [reAuthenticateThunk.rejected as any]: (state, action): void => {
-            // console.log("Authenticate reducer rejected,", state, action);
+            console.log("Authenticate reducer rejected,", state, action);
             state.loading = false;
+            state.error = action.error;
             // state.error = action.
         },
         [reAuthenticateThunk.pending as any]: (state, action): void => {
-            // console.log("Authenticate reducer pending,", state, action);
+            console.log("Authenticate reducer pending,", state, action);
             state.loading = true;
         },
     },

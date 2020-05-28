@@ -3,21 +3,21 @@ import Router from "./routers/root";
 import "./App.css";
 // import { useCookies } from 'react-cookie';
 // import initializeStore from './app/init';
-import { useDispatch, useSelector } from "react-redux";
-import { LoaderFull } from "./components";
-import { selectAuth, reAuthenticateThunk } from "./pages/auth/authSlice";
+import { useDispatch } from "react-redux";
+import { reAuthenticateThunk } from "./pages/auth/authSlice";
+import init from "./app/init";
 
 const App: React.FunctionComponent = () => {
     const dispatch = useDispatch();
-    const authState = useSelector(selectAuth);
+    // const authState = useSelector(selectAuth);
 
     // Run functions on app startup
     useEffect(() => {
         dispatch(reAuthenticateThunk());
+        init();
     }, [dispatch]);
     return (
         <React.Fragment>
-            {authState.loading && <LoaderFull open={authState.loading} />}
             <div className="App">
                 <Router />
             </div>

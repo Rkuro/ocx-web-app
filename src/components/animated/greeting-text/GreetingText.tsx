@@ -1,9 +1,9 @@
 /* eslint @typescript-eslint/ban-ts-ignore: 0 */
 import React, { useState, useEffect } from "react";
 import { Typography } from "@material-ui/core";
-import { setFinished, selectGreeting } from "./greetingSlice";
+import { setFinished } from "./greetingSlice";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useCookies } from "react-cookie";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -24,7 +24,7 @@ const messages = ["Hi", "Welcome to OpenCreditX"];
 const GreetingText: React.FunctionComponent = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const [cookies, setCookies] = useCookies(["greetingViewed"]);
+    const [, setCookies] = useCookies(["greetingViewed"]);
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
     const [currentVariant, setCurrentVariant] = useState("inactive");
 

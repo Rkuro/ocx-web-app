@@ -1,15 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import MenuIcon from "@material-ui/icons/Menu";
-import {
-    Hidden,
-    AppBar,
-    useScrollTrigger,
-    Slide,
-    Toolbar,
-    IconButton,
-    Button,
-} from "@material-ui/core";
+import { Hidden } from "@material-ui/core";
+import { themeExtras } from "../../theme";
 // import { Link } from "react-router-dom";
 // import Routes from "../../app/constants/routes";
 
@@ -19,7 +11,11 @@ const useNavStyles = makeStyles((theme: Theme) =>
         mobileRoot: {},
         mobileAppBar: {},
         menuButton: {},
-        nonMobileRoot: {},
+        nonMobileRoot: {
+            width: "100vw",
+            padding: theme.spacing(2),
+            borderBottom: `1px solid ${themeExtras.navBorder}`,
+        },
         nonMobileAppBar: {
             backgroundColor: "transparent",
         },
@@ -37,9 +33,7 @@ export default function Nav() {
         <>
             <div className={classes.root}>
                 {/* Mobile Nav */}
-                <Hidden mdUp>
-                    <MobileNav />
-                </Hidden>
+                <Hidden mdUp>{/* <MobileNav /> */}</Hidden>
                 {/* Non-Mobile Nav */}
                 <Hidden smDown>
                     <NonMobileNav />
@@ -49,56 +43,11 @@ export default function Nav() {
     );
 }
 
-function HideOnScroll(props: any) {
-    const { children } = props;
-    const trigger = useScrollTrigger();
-
-    return (
-        <Slide appear={false} direction={props.direction} in={!trigger}>
-            {children}
-        </Slide>
-    );
-}
-
-function MobileNav() {
-    const classes = useNavStyles();
-    const [open] = useState(false);
-    return (
-        <>
-            <HideOnScroll direction={"down"}>
-                <AppBar className={classes.mobileAppBar}>
-                    <Toolbar>
-                        <IconButton
-                            edge="start"
-                            className={classes.menuButton}
-                            color="inherit"
-                            aria-label="open drawer"
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                    </Toolbar>
-
-                    {open && "content!"}
-                </AppBar>
-            </HideOnScroll>
-        </>
-    );
-}
-
-function NonMobileNav() {
+const NonMobileNav: React.FunctionComponent = () => {
     const classes = useNavStyles();
     return (
         <>
-            <div className={classes.nonMobileRoot}>
-                <AppBar className={classes.nonMobileAppBar} position="sticky">
-                    <Toolbar
-                        variant="dense"
-                        className={classes.nonMobileToolbar}
-                    >
-                        <Button>Login</Button>
-                    </Toolbar>
-                </AppBar>
-            </div>
+            <div className={classes.nonMobileRoot}></div>
         </>
     );
-}
+};

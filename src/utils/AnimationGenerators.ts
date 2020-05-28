@@ -1,7 +1,7 @@
-import { mapValue, mapValues } from "./ValueMapping";
+import { mapValue, mapValues, Range } from "./ValueMapping";
 
 const getValueWithProbability = (i: number, numFlickers: number): number => {
-    if (i == numFlickers - 1) return 1;
+    if (i === numFlickers - 1) return 1;
     return Math.random() < mapValue(0, numFlickers - 1, 0, 1, i) ? 1 : 0;
 };
 
@@ -18,11 +18,25 @@ const generateFlickerTimes = (flickers: number): number[] => {
     );
 };
 
-export const useFlickerAnimations = (flickers?: number) => {
+type FlickerAnimations = {
+    opacities: number[];
+    times: number[];
+};
+
+export const useFlickerAnimations = (flickers?: number): FlickerAnimations => {
     const numFlickers = flickers ? flickers : 100;
 
     return {
         opacities: generateFlickerOpacities(numFlickers),
         times: generateFlickerTimes(numFlickers),
     };
+};
+
+export const generateRandomValues = (
+    numValues: number,
+    range: Range
+): number[] => {
+    return Array.from(Array(numValues)).map((i) =>
+        mapValue(0, 1, range[0], range[1], Math.random())
+    );
 };

@@ -9,8 +9,10 @@ import {
     OAuthButtonGithub,
     OAuthButtonFacebook,
 } from "./oauth-buttons";
+import BackgroundRandomLines from "./animated/background-random-lines/BackgroundRandomLines";
 
 export {
+    BackgroundRandomLines,
     GreetingText,
     LoaderFull,
     OAuthButtonGoogle,

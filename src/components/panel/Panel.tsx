@@ -1,29 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core";
 import clsx from "clsx";
-import hexToRgba from "hex-to-rgba";
 import { themeExtras } from "../../theme";
 import { motion, MotionProps } from "framer-motion";
-import { runFunctionsOnTimeout } from "../../utils/TimeoutUtils";
-import { mapValue, mapValues } from "../../utils/ValueMapping";
 import { useFlickerAnimations } from "../../utils/AnimationGenerators";
+import { getLinearGradient } from "../../utils/StyleFunctions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         container: {
             position: "relative",
-            background: `linear-gradient(${hexToRgba(
-                theme.palette.primary.dark,
-                0.5
-            )}, 70%, ${hexToRgba(theme.palette.primary.light, 0.5)})`,
             padding: theme.spacing(4),
             minWidth: "300px",
         },
+        default: {
+            background: getLinearGradient(
+                theme.palette.primary.dark,
+                theme.palette.primary.light
+            ),
+        },
+        error: {
+            background: getLinearGradient(
+                theme.palette.error.dark,
+                theme.palette.error.light
+            ),
+        },
+        success: {
+            background: getLinearGradient(
+                theme.palette.success.dark,
+                theme.palette.success.light
+            ),
+        },
         borderTop: {
-            borderTop: `2px solid ${themeExtras.border}`,
+            borderTop: `2px solid ${themeExtras.panelBorder}`,
         },
         borderBottom: {
-            borderBottom: `2px solid ${themeExtras.border}`,
+            borderBottom: `2px solid ${themeExtras.panelBorder}`,
         },
         common: {
             borderColor: "white",
@@ -69,34 +81,41 @@ interface PanelProps {
     corners?: boolean;
     borderTop?: boolean;
     borderBottom?: boolean;
+    flickerIn?: boolean;
+    error?: boolean;
+    success?: boolean;
     panelMotion?: MotionProps;
     cornersMotion?: MotionProps;
 }
 
 const Panel: React.FunctionComponent<PanelProps> = (props) => {
     const classes = useStyles();
-    // const opacities = generateFlickerOpacities();
-
     const { opacities, times } = useFlickerAnimations();
 
-    const animate = {
-        opacity: opacities,
-    };
-
-    const transition = {
-        duration: 1,
-        times: times,
+    const variants = {
+        idle: {},
+        flicker: {
+            opacity: props.flickerIn ? opacities : undefined,
+            transition: {
+                duration: 1,
+                times: props.flickerIn ? times : undefined,
+            },
+        },
     };
 
     return (
         <motion.div
             className={clsx({
                 [classes.container]: true,
+                [classes.error]: props.error,
+                [classes.success]: props.success,
+                [classes.default]: !props.error && !props.success,
                 [classes.borderBottom]: props.borderBottom,
                 [classes.borderTop]: props.borderTop,
             })}
-            animate={animate}
-            transition={transition}
+            animate="flicker"
+            variants={variants}
+            exit={{ opacity: 0 }}
             {...props.panelMotion}
         >
             {props.corners && <PanelCorners {...props} />}
@@ -114,14 +133,49 @@ const fetchContainmentStatus = (
     inline?: boolean
 ): boolean => {
     const cornerType = corner.includes("top") ? "top" : "bottom";
-    if (cornerType != containmentType) return false;
+    if (cornerType !== containmentType) return false;
     return Boolean(inline);
+};
+
+const getCornerStartPoint = (corner: string): string => {
+    const startOffset = 48;
+    switch (corner) {
+        case "topLeft":
+            return `${startOffset}%, ${startOffset}%, 0`;
+        case "topRight":
+            return `-${startOffset}px, ${startOffset}px, 0`;
+        case "bottomRight":
+            return `-${startOffset}px, -${startOffset}px, 0`;
+        case "bottomLeft":
+            return `${startOffset}px, -${startOffset}px, 0`;
+        default:
+            return "0px, 0px, 0px";
+    }
 };
 
 // Work clockwise starting from the top left
 const PanelCorners: React.FunctionComponent<PanelProps> = (props) => {
     const classes = useStyles();
     const corners = ["topLeft", "topRight", "bottomRight", "bottomLeft"];
+
+    const variants = {
+        moving: (corner: string): object => {
+            return {
+                transform: [
+                    `translate3d(${getCornerStartPoint(corner)})`,
+                    `translate3d(0px, 0px, 0px)`,
+                ],
+            };
+        },
+    };
+
+    const transition = {
+        duration: 0.5,
+    };
+
+    const exit = {
+        opacity: 0,
+    };
 
     return (
         <>
@@ -144,6 +198,11 @@ const PanelCorners: React.FunctionComponent<PanelProps> = (props) => {
                                 props.inlineCorners
                             ),
                         })}
+                        variants={variants}
+                        animate="moving"
+                        custom={corner}
+                        transition={transition}
+                        exit={exit}
                         {...props.cornersMotion}
                     />
                 );

@@ -1,19 +1,19 @@
-//@ts-nocheck
-import React, { useEffect, useState } from "react";
+import React, { useRef } from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core";
-import { useSpring, animated } from "react-spring";
 import { themeExtras } from "../../../theme";
 import { motion } from "framer-motion";
 import clsx from "clsx";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        container: {},
+        container: {
+            width: "100%",
+        },
         border: {
             position: "absolute",
-            backgroundColor: themeExtras.border,
+            backgroundColor: themeExtras.panelBorder,
             height: "2px",
-            width: "100px",
+            width: "20%",
         },
         left: {
             left: 0,
@@ -39,7 +39,7 @@ interface MovingBorderProps {
 }
 
 // randomly offset delay by where it is
-const getDelay = (variation, top) => {
+const getDelay = (variation: string, top?: boolean): number => {
     if (variation === "left") {
         return top ? 0.25 : 0;
     } else {
@@ -49,18 +49,36 @@ const getDelay = (variation, top) => {
 
 const MovingBorder: React.FunctionComponent<MovingBorderProps> = (props) => {
     const classes = useStyles();
-    const movement = Math.random() * 100;
-    const anim = {};
+    const ref = useRef(null);
+    const variants = {
+        moving: ({ variation, ref }): object => {
+            return {
+                transform: [
+                    `translate3d(0px, 0, 0)`,
+                    `translate3d(${variation === "left" ? "" : "-"}${
+                        ref.current.offsetWidth * 0.8 // 1 - the actual element width
+                    }px, 0, 0)`,
+                    `translate3d(0px, 0, 0)`,
+                ],
+            };
+        },
+    };
     const transition = {
         duration: 4,
         loop: Infinity,
         ease: [0.17, 0.67, 0.83, 0.67],
         times: [0, 0.7, 1],
+        delay: ({ variation, ref }): number => {
+            return getDelay(variation, props.top);
+        },
+    };
+    const exit = {
+        opacity: 0,
     };
     const variations = ["left", "right"];
     return (
         <>
-            <div className={classes.container}>
+            <div className={classes.container} ref={ref}>
                 {variations.map((variation) => (
                     <motion.div
                         key={`moving-border-${variation}`}
@@ -68,22 +86,21 @@ const MovingBorder: React.FunctionComponent<MovingBorderProps> = (props) => {
                             [classes.border]: true,
                             [classes.top]: props.top,
                             [classes.bottom]: props.bottom,
+
                             [classes.left]: variation === "left",
                             [classes.right]: variation === "right",
                         })}
-                        animate={{
-                            transform: [
-                                `translate3d(0px, 0, 0)`,
-                                `translate3d(${
-                                    variation === "left" ? "100" : "-100"
-                                }%, 0, 0)`,
-                                `translate3d(0px, 0, 0)`,
-                            ],
-                        }}
+                        animate="moving"
+                        variants={variants}
                         transition={{
                             ...transition,
                             delay: getDelay(variation, props.top),
                         }}
+                        custom={{
+                            variation,
+                            ref,
+                        }}
+                        exit={exit}
                     />
                 ))}
             </div>

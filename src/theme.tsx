@@ -16,6 +16,11 @@ const theme = createMuiTheme({
         background: {
             default: "#081B22",
         },
+        error: {
+            light: "#AB5559",
+            main: "#962A30",
+            dark: "#782226",
+        },
     },
     typography: {
         fontSize: 12,
@@ -23,7 +28,9 @@ const theme = createMuiTheme({
 });
 
 export const themeExtras = {
-    border: "#798C93",
+    panelBorder: "#798C93",
+    navBorder: "#5F7078",
+    backgroundLines: "#162930",
 };
 
 export default theme;
