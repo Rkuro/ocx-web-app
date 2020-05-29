@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { makeStyles, createStyles } from "@material-ui/styles";
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation, AnimationControls } from "framer-motion";
 import hexToRgba from "hex-to-rgba";
 import { Theme } from "@material-ui/core";
 import clsx from "clsx";
@@ -73,6 +73,11 @@ const useStyles = makeStyles((theme: Theme) =>
             height: "25px",
             border: `2px solid ${theme.palette.secondary.main}`,
         },
+        corner: {
+            width: "2px",
+            height: "2px",
+            position: "absolute",
+        },
     })
 );
 
@@ -129,10 +134,46 @@ const WelcomeAnimation: React.FunctionComponent<WelcomeAnimationProps> = (
     props
 ) => {
     const classes = useStyles();
-    // const theme = useTheme();
-    const numSemiCircles = 4;
-
     const controls = useAnimation();
+
+    const squareVariants = {
+        begin: {},
+        center: {
+            scale: [1, 0],
+            transition: {
+                delay: 2.3,
+                duration: 1,
+                ease: [0.42, 0.0, 0.58, 1.0],
+            },
+        },
+    };
+
+    useEffect(() => {
+        controls.start("center");
+    }, [controls]);
+
+    return (
+        <>
+            <motion.ul className={classes.semiCircleList}>
+                <SemiCircles controls={controls} />
+                <motion.div
+                    className={classes.centerRectangle}
+                    variants={squareVariants}
+                    animate={controls}
+                />
+                <Corners controls={controls} />
+            </motion.ul>
+        </>
+    );
+};
+
+interface ControlProps {
+    controls: AnimationControls;
+}
+
+const SemiCircles: React.FunctionComponent<ControlProps> = (props) => {
+    const numSemiCircles = 4;
+    const classes = useStyles();
 
     const semiCircleVariants = {
         begin: (i: number): object => {
@@ -162,64 +203,65 @@ const WelcomeAnimation: React.FunctionComponent<WelcomeAnimationProps> = (
         },
     };
 
-    const squareVariants = {
-        begin: {},
-        center: {
-            scale: [1, 0],
-            transition: {
-                delay: 2.3,
-                duration: 1,
-                ease: [0.42, 0.0, 0.58, 1.0],
-            },
-        },
-    };
-
-    useEffect(() => {
-        controls.start("center");
-    }, [controls]);
-
     return (
         <>
-            <motion.ul className={classes.semiCircleList}>
-                {Array.from(Array(numSemiCircles).keys()).map((i) => {
-                    return (
-                        <motion.div
-                            key={i}
-                            className={classes.outerSemiCircle}
-                            variants={semiCircleVariants}
-                            animate={controls}
-                            initial="begin"
-                            custom={i}
-                        >
-                            <div
-                                className={classes.innerSemiBorder}
-                                style={semiCircleStyle}
-                            />
-                            <div
-                                className={classes.semiCircle}
-                                style={semiCircleStyle}
-                            />
-                            <div
-                                className={clsx(
-                                    classes.bottomBar,
-                                    classes.bottomBarRight
-                                )}
-                            />
-                            <div
-                                className={clsx(
-                                    classes.bottomBar,
-                                    classes.bottomBarLeft
-                                )}
-                            />
-                        </motion.div>
-                    );
-                })}
-                <motion.div
-                    className={classes.centerRectangle}
-                    variants={squareVariants}
-                    animate={controls}
-                />
-            </motion.ul>
+            {Array.from(Array(numSemiCircles).keys()).map((i) => {
+                return (
+                    <motion.div
+                        key={i}
+                        className={classes.outerSemiCircle}
+                        variants={semiCircleVariants}
+                        animate={props.controls}
+                        initial="begin"
+                        custom={i}
+                    >
+                        <div
+                            className={classes.innerSemiBorder}
+                            style={semiCircleStyle}
+                        />
+                        <div
+                            className={classes.semiCircle}
+                            style={semiCircleStyle}
+                        />
+                        <div
+                            className={clsx(
+                                classes.bottomBar,
+                                classes.bottomBarRight
+                            )}
+                        />
+                        <div
+                            className={clsx(
+                                classes.bottomBar,
+                                classes.bottomBarLeft
+                            )}
+                        />
+                    </motion.div>
+                );
+            })}
+        </>
+    );
+};
+
+const Corners: React.FunctionComponent<ControlProps> = (props) => {
+    const classes = useStyles();
+    const numCorners = 4;
+    const variants = {
+        rotate: (i) => {
+            return {};
+        },
+    };
+    return (
+        <>
+            {Array.from(Array(numCorners).keys()).map((i) => {
+                return (
+                    <motion.div
+                        className={classes.corner}
+                        key={i}
+                        variants={variants}
+                        animate={props.controls}
+                    />
+                );
+            })}
         </>
     );
 };
