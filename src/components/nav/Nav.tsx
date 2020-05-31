@@ -33,7 +33,7 @@ export default function Nav() {
         <>
             <div className={classes.root}>
                 {/* Mobile Nav */}
-                <Hidden mdUp>{/* <MobileNav /> */}</Hidden>
+                {/* <Hidden mdUp><MobileNav /></Hidden> */}
                 {/* Non-Mobile Nav */}
                 <Hidden smDown>
                     <NonMobileNav />

@@ -4,8 +4,15 @@ import { motion, useAnimation, AnimationControls } from "framer-motion";
 import hexToRgba from "hex-to-rgba";
 import { Theme } from "@material-ui/core";
 import clsx from "clsx";
+import Hexagon from "react-svg-hexagon";
+import { useWidth, isMobile } from "../../../utils/StyleFunctions";
 
 const semiCircleWidth = 300;
+const rectangleHeight = 90;
+const rectangleSupportHeight = 30;
+const rectangleOffset = 5;
+const stepOneDuration = 3;
+const stepTwoDuration = 3;
 
 /**
  * radial-gradient(ellipse 400px 250px at center 50px, transparent 8%, #26BBB9)
@@ -16,7 +23,7 @@ const semiCircleStyle = {
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        semiCircleList: {
+        animationContainer: {
             position: "relative",
             display: "flex",
             justifyContent: "center",
@@ -72,11 +79,86 @@ const useStyles = makeStyles((theme: Theme) =>
             width: "25px",
             height: "25px",
             border: `2px solid ${theme.palette.secondary.main}`,
+            position: "absolute",
+        },
+        cornerContainer: {
+            width: "8vw",
+            height: "8vw",
         },
         corner: {
-            width: "2px",
-            height: "2px",
             position: "absolute",
+            color: "transparent",
+            textShadow: `0 0 0 ${theme.palette.secondary.main}`,
+            fontSize: "5px",
+        },
+        top: {
+            top: 0,
+        },
+        bottom: {
+            bottom: 0,
+        },
+        left: {
+            left: 0,
+        },
+        right: {
+            right: 0,
+        },
+        rectanglesContainer: {
+            position: "absolute",
+            display: "flex",
+            flexDirection: "column",
+        },
+        rectangleContainer: {
+            position: "relative",
+            display: "flex",
+        },
+        rectangleMain: {
+            height: `${rectangleHeight}px`,
+            width: "10px",
+            background: "white",
+        },
+        rectangleMainTop: {
+            marginTop: `${
+                semiCircleWidth / 2 -
+                rectangleHeight +
+                rectangleOffset +
+                2 * rectangleSupportHeight
+            }px`,
+        },
+        rectangleMainBot: {
+            marginBottom: `${
+                semiCircleWidth / 2 -
+                rectangleHeight +
+                rectangleOffset +
+                2 * rectangleSupportHeight
+            }px`,
+        },
+        rectangleSupport: {
+            height: `${rectangleSupportHeight}px`,
+            width: "10px",
+            background: "white",
+            position: "relative",
+            margin: "0 10px",
+        },
+        rectangleSupportTop: {},
+        rectangleSupportBot: {
+            alignSelf: "flex-end",
+        },
+        finalHex: {
+            position: "absolute",
+        },
+        finalCircle: {
+            width: "75px",
+            height: "75px",
+            position: "absolute",
+            border: "15px solid white",
+            borderRadius: "50%",
+        },
+        finalCenterLine: {
+            width: "1px",
+            height: "75px",
+            position: "absolute",
+            background: "white",
         },
     })
 );
@@ -94,7 +176,6 @@ interface SemiCircleTransformValues {
 
 const initialSemiCircleTransformOffsetValues = {
     x: 150,
-    // x: 0,
     xOffset: 20,
     rotate: 20,
     rotateOffset: 10,
@@ -134,35 +215,62 @@ const WelcomeAnimation: React.FunctionComponent<WelcomeAnimationProps> = (
     props
 ) => {
     const classes = useStyles();
-    const controls = useAnimation();
+    const stepOneControls = useAnimation();
+    const stepTwoControls = useAnimation();
+    const width = useWidth();
 
     const squareVariants = {
         begin: {},
         center: {
             scale: [1, 0],
             transition: {
-                delay: 2.3,
+                delay: 2,
                 duration: 1,
                 ease: [0.42, 0.0, 0.58, 1.0],
             },
         },
     };
 
+    const containerVariants = {
+        begin: {
+            scale: isMobile(width) ? 0.7 : 1,
+        },
+        rotate: {
+            rotate: 90,
+            transition: {
+                duration: stepTwoDuration,
+                ease: [0.53, 0.02, 0.34, 1],
+            },
+        },
+    };
+
     useEffect(() => {
-        controls.start("center");
-    }, [controls]);
+        (async function (): Promise<void> {
+            console.log("starting center");
+            await stepOneControls.start("center");
+            console.log("starting rotate");
+            await stepTwoControls.start("rotate");
+        })();
+    }, [stepOneControls, stepTwoControls]);
 
     return (
         <>
-            <motion.ul className={classes.semiCircleList}>
-                <SemiCircles controls={controls} />
+            <motion.div
+                className={classes.animationContainer}
+                variants={containerVariants}
+                animate={stepTwoControls}
+                initial="begin"
+            >
+                <RectangleRotation controls={stepOneControls} />
+                <SemiCircles controls={stepOneControls} />
                 <motion.div
                     className={classes.centerRectangle}
                     variants={squareVariants}
-                    animate={controls}
+                    animate={stepOneControls}
                 />
-                <Corners controls={controls} />
-            </motion.ul>
+                <Corners controls={stepTwoControls} />
+                <CircleHex controls={stepTwoControls} />
+            </motion.div>
         </>
     );
 };
@@ -177,7 +285,6 @@ const SemiCircles: React.FunctionComponent<ControlProps> = (props) => {
 
     const semiCircleVariants = {
         begin: (i: number): object => {
-            console.log("beginning: ", i);
             return {
                 transform: generateSemiCircleTransformOffset(
                     i,
@@ -186,14 +293,13 @@ const SemiCircles: React.FunctionComponent<ControlProps> = (props) => {
             };
         },
         center: (i: number): object => {
-            console.log("end", i);
             return {
                 transform: generateSemiCircleTransformOffset(
                     i,
                     endSemiCircleTransformOffsetValues
                 ),
                 transition: {
-                    duration: 2.3,
+                    duration: stepOneDuration,
                     ease:
                         i % 2 === 0
                             ? [0.42, 0.0, 0.58, 1.0]
@@ -242,6 +348,19 @@ const SemiCircles: React.FunctionComponent<ControlProps> = (props) => {
     );
 };
 
+const renderCorner = (i: number): React.ReactNode => {
+    switch (i) {
+        case 0:
+            return "\u25E4";
+        case 1:
+            return "\u25E5";
+        case 2:
+            return "\u25E3";
+        case 3:
+            return "\u25E2";
+    }
+};
+
 const Corners: React.FunctionComponent<ControlProps> = (props) => {
     const classes = useStyles();
     const numCorners = 4;
@@ -251,17 +370,154 @@ const Corners: React.FunctionComponent<ControlProps> = (props) => {
         },
     };
     return (
-        <>
+        <motion.div className={classes.cornerContainer}>
             {Array.from(Array(numCorners).keys()).map((i) => {
                 return (
                     <motion.div
-                        className={classes.corner}
+                        className={clsx({
+                            [classes.corner]: true,
+                            [classes.top]: i < 2,
+                            [classes.bottom]: i >= 2,
+                            [classes.left]: i % 2 === 0,
+                            [classes.right]: i % 2 === 1,
+                        })}
                         key={i}
                         variants={variants}
                         animate={props.controls}
-                    />
+                    >
+                        {renderCorner(i)}
+                    </motion.div>
                 );
             })}
+        </motion.div>
+    );
+};
+
+const RectangleRotation: React.FunctionComponent<ControlProps> = (props) => {
+    const classes = useStyles();
+    const numSides = 2;
+    const variants = {
+        begin: (i): object => {
+            return {
+                transform: `translate3d(0, 0, 0)`,
+            };
+        },
+        center: (i): object => {
+            return {
+                transform: `translateY(${i > 0 ? "" : "-"}${
+                    semiCircleWidth / 2 -
+                    rectangleHeight +
+                    rectangleOffset +
+                    rectangleHeight
+                }px)`,
+                transition: {
+                    duration: 2,
+                    ease: [0.42, 0.0, 0.58, 1.0],
+                },
+            };
+        },
+    };
+
+    return (
+        <motion.div className={classes.rectanglesContainer}>
+            {Array.from(Array(numSides).keys()).map((i) => {
+                return (
+                    <motion.div key={i} className={classes.rectangleContainer}>
+                        <motion.div
+                            className={clsx({
+                                [classes.rectangleSupport]: true,
+                                [classes.rectangleSupportBot]: i !== 0,
+                                [classes.rectangleSupportTop]: i === 0,
+                            })}
+                        />
+                        <motion.div
+                            className={clsx({
+                                [classes.rectangleMain]: true,
+                                [classes.rectangleMainBot]: i !== 0,
+                                [classes.rectangleMainTop]: i === 0,
+                            })}
+                            variants={variants}
+                            animate={props.controls}
+                            initial="begin"
+                            custom={i}
+                        />
+                        <motion.div
+                            className={clsx({
+                                [classes.rectangleSupport]: true,
+                                [classes.rectangleSupportBot]: i !== 0,
+                                [classes.rectangleSupportTop]: i === 0,
+                            })}
+                        />
+                    </motion.div>
+                );
+            })}
+        </motion.div>
+    );
+};
+
+const CircleHex: React.FunctionComponent<ControlProps> = (props) => {
+    const classes = useStyles();
+
+    const circleVariants = {
+        begin: {
+            scale: 1.5,
+            opacity: 0,
+        },
+        rotate: {
+            scale: 1,
+            opacity: 1,
+            transition: {
+                duration: stepTwoDuration - 1,
+                delay: 1,
+            },
+        },
+    };
+    const hexVariants = {
+        begin: {
+            scale: 0,
+        },
+        rotate: {
+            scale: 1,
+            transition: {
+                duration: stepTwoDuration - 1,
+                delay: 1,
+            },
+        },
+    };
+    const centerLineVariants = {
+        begin: {
+            scale: 0,
+        },
+        rotate: {
+            scale: 1,
+            transition: {
+                duration: stepTwoDuration - 2,
+                delay: 2,
+            },
+        },
+    };
+    return (
+        <>
+            <motion.div
+                className={classes.finalCircle}
+                variants={circleVariants}
+                animate={props.controls}
+                initial="begin"
+            />
+            <motion.div
+                className={classes.finalHex}
+                variants={hexVariants}
+                animate={props.controls}
+                initial="begin"
+            >
+                <Hexagon fill="white" side={20} />
+            </motion.div>
+            <motion.div
+                className={classes.finalCenterLine}
+                variants={centerLineVariants}
+                animate={props.controls}
+                initial="begin"
+            />
         </>
     );
 };
