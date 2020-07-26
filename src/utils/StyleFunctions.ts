@@ -1,5 +1,5 @@
 import hexToRgba from "hex-to-rgba";
-import { Theme, useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
 
@@ -24,16 +24,31 @@ type BreakpointOrNull = Breakpoint | null;
  * breakpoints in theme is static. It will break once you change the number of
  * breakpoints. See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
  */
-export const useWidth = (): BreakpointOrNull => {
-    const theme: Theme = useTheme();
-    const keys: Breakpoint[] = [...theme.breakpoints.keys].reverse();
-    return (
-        keys.reduce((output: BreakpointOrNull, key: Breakpoint) => {
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            const matches = useMediaQuery(theme.breakpoints.up(key));
-            return !output && matches ? key : output;
-        }, null) || "xs"
-    );
+// export const useWidth = (): BreakpointOrNull => {
+//     const theme: Theme = useTheme();
+//     const keys: Breakpoint[] = [...theme.breakpoints.keys].reverse();
+//     return (
+//         keys.reduce((output: BreakpointOrNull, key: Breakpoint) => {
+//             // eslint-disable-next-line react-hooks/rules-of-hooks
+//             const matches = useMediaQuery(theme.breakpoints.up(key));
+//             return !output && matches ? key : output;
+//         }, null) || "xs"
+//     );
+// };
+
+export const useWidth = () => {
+    const theme = useTheme();
+    const isXs = useMediaQuery(theme.breakpoints.up("xs"));
+    const isSm = useMediaQuery(theme.breakpoints.up("sm"));
+    const isMd = useMediaQuery(theme.breakpoints.up("md"));
+    const isLg = useMediaQuery(theme.breakpoints.up("lg"));
+    const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+    if (isXl) return "xl";
+    if (isLg) return "lg";
+    if (isMd) return "md";
+    if (isSm) return "sm";
+    if (isXs) return "xs";
+    return null;
 };
 
 export const isMobile = (breakpoint: BreakpointOrNull): boolean => {

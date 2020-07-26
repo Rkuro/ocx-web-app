@@ -9,36 +9,21 @@ import {
 } from "@feathersjs/authentication/lib";
 import { User } from "../../app/types";
 
-export enum AuthStage {
-    LANDING = "LANDING",
-    LOGIN = "LOGIN",
-    SIGNUP = "SIGNUP",
-}
-
 export interface AuthState {
-    meta: {
-        stage: AuthStage;
-    };
+    meta: {};
     loading: boolean;
     error: null | Error;
     user: null | User;
 }
 
 const initialState: AuthState = {
-    meta: {
-        stage: AuthStage.LANDING,
-    },
-    loading: false,
+    meta: {},
+    loading: true, // initializing to true to not flash pieces of the app
     error: null,
     user: null,
 };
 
-export interface AuthDispatchReturn {
-    payload: AuthStage;
-    type: string;
-}
-
-interface AuthenticatePayload {
+export interface AuthenticatePayload {
     creds?: {
         email: string;
         password: string;
@@ -65,40 +50,52 @@ export const reAuthenticateThunk = createAsyncThunk<
     AuthenticationResult,
     undefined
 >("user/reauthenticate", async () => {
-    const response = await reAuthenticate();
-    return response.data;
+    return await reAuthenticate();
 });
 
 export const authSlice = createSlice({
     name: slices.AUTH,
     initialState,
     reducers: {
-        updateStage: (state, action: PayloadAction<AuthStage>): void => {
-            state.meta.stage = action.payload;
-        },
         updateLoadingState: (state, action: PayloadAction<boolean>): void => {
             state.loading = action.payload;
         },
     },
     extraReducers: {
-        [reAuthenticateThunk.fulfilled as any]: (state, action): void => {
-            console.log("Authenticate reducer fulfilled,", state, action);
+        [authenticateThunk.fulfilled as any]: (state, action): void => {
+            console.log("Authenticate reducer fulfilled:", state, action);
             state.loading = false;
+            state.error = null;
+            state.user = action.payload.user;
         },
-        [reAuthenticateThunk.rejected as any]: (state, action): void => {
-            console.log("Authenticate reducer rejected,", state, action);
+        [authenticateThunk.rejected as any]: (state, action): void => {
+            console.log("Authenticate reducer rejected", state, action);
             state.loading = false;
             state.error = action.error;
-            // state.error = action.
+        },
+        [authenticateThunk.pending as any]: (state, action): void => {
+            console.log("Authenticate reducer pending", state, action);
+            state.loading = true;
+        },
+        [reAuthenticateThunk.fulfilled as any]: (state, action): void => {
+            console.log("ReAuthenticate reducer fulfilled,", state, action);
+            state.loading = false;
+            state.error = null;
+            state.user = action.payload.user;
+        },
+        [reAuthenticateThunk.rejected as any]: (state, action): void => {
+            console.log("ReAuthenticate reducer rejected,", state, action);
+            state.loading = false;
+            state.error = action.error;
         },
         [reAuthenticateThunk.pending as any]: (state, action): void => {
-            console.log("Authenticate reducer pending,", state, action);
+            console.log("ReAuthenticate reducer pending,", state, action);
             state.loading = true;
         },
     },
 });
 
-export const { updateStage } = authSlice.actions;
+export const { updateLoadingState } = authSlice.actions;
 
 export const selectAuth = (state: RootState): AuthState => {
     return state.auth;

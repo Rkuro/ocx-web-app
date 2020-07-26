@@ -1,30 +1,46 @@
 import React, { useEffect } from "react";
 import { makeStyles, createStyles } from "@material-ui/styles";
-import { motion, useAnimation, AnimationControls } from "framer-motion";
+import {
+    motion,
+    useAnimation,
+    AnimationControls,
+    AnimatePresence,
+} from "framer-motion";
 import hexToRgba from "hex-to-rgba";
 import { Theme } from "@material-ui/core";
 import clsx from "clsx";
-import Hexagon from "react-svg-hexagon";
 import { useWidth, isMobile } from "../../../utils/StyleFunctions";
 
 const semiCircleWidth = 300;
 const rectangleHeight = 90;
 const rectangleSupportHeight = 30;
 const rectangleOffset = 5;
-const stepOneDuration = 3;
-const stepTwoDuration = 3;
+const stepOneDuration = 1;
+const stepTwoDuration = 1;
 
 /**
- * radial-gradient(ellipse 400px 250px at center 50px, transparent 8%, #26BBB9)
+ * The point of this file is to encapsulate the animation that serves literally 0 purpose and just looks nice
  */
+
 const semiCircleStyle = {
     boxShadow: `inset rgba(38, 187, 185, 0.1) 0px 2px 1px 0px`,
 };
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        container: {
+            maxWidth: "100vw",
+            maxHeight: "100vh",
+            // overflow: "hidden",
+        },
         animationContainer: {
             position: "relative",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+        },
+        semiCirclesContainer: {
+            position: "absolute",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -82,14 +98,14 @@ const useStyles = makeStyles((theme: Theme) =>
             position: "absolute",
         },
         cornerContainer: {
-            width: "8vw",
-            height: "8vw",
+            width: "4vw",
+            height: "4vw",
         },
         corner: {
             position: "absolute",
             color: "transparent",
             textShadow: `0 0 0 ${theme.palette.secondary.main}`,
-            fontSize: "5px",
+            fontSize: "7px",
         },
         top: {
             top: 0,
@@ -144,6 +160,12 @@ const useStyles = makeStyles((theme: Theme) =>
         rectangleSupportBot: {
             alignSelf: "flex-end",
         },
+        circleContainer: {
+            position: "absolute",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+        },
         finalHex: {
             position: "absolute",
         },
@@ -155,7 +177,7 @@ const useStyles = makeStyles((theme: Theme) =>
             borderRadius: "50%",
         },
         finalCenterLine: {
-            width: "1px",
+            width: "2px",
             height: "75px",
             position: "absolute",
             background: "white",
@@ -164,7 +186,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface WelcomeAnimationProps {
-    active: boolean; // when to run the animation
+    display: boolean; // whether to show itself
+    run: boolean; // whether to run
+    setDisplay: Function; //update whether to show itself
+    setRun: Function; // update whether to run
 }
 
 interface SemiCircleTransformValues {
@@ -186,6 +211,14 @@ const endSemiCircleTransformOffsetValues = {
     xOffset: 0,
     rotate: -90,
     rotateOffset: 0,
+};
+
+const exitAnim = {
+    opacity: 0,
+    transform: "translate3d(0, 50px, 0)",
+    transition: {
+        duration: 1,
+    },
 };
 
 const generateSemiCircleTransformOffset = (
@@ -224,8 +257,8 @@ const WelcomeAnimation: React.FunctionComponent<WelcomeAnimationProps> = (
         center: {
             scale: [1, 0],
             transition: {
-                delay: 2,
-                duration: 1,
+                delay: stepOneDuration * 0.6,
+                duration: stepOneDuration * 0.3,
                 ease: [0.42, 0.0, 0.58, 1.0],
             },
         },
@@ -233,10 +266,11 @@ const WelcomeAnimation: React.FunctionComponent<WelcomeAnimationProps> = (
 
     const containerVariants = {
         begin: {
-            scale: isMobile(width) ? 0.7 : 1,
+            scale: isMobile(width) ? 0.4 : 1,
         },
         rotate: {
             rotate: 90,
+            scale: isMobile(width) ? 0.6 : 1.2,
             transition: {
                 duration: stepTwoDuration,
                 ease: [0.53, 0.02, 0.34, 1],
@@ -245,33 +279,39 @@ const WelcomeAnimation: React.FunctionComponent<WelcomeAnimationProps> = (
     };
 
     useEffect(() => {
-        (async function (): Promise<void> {
-            console.log("starting center");
-            await stepOneControls.start("center");
-            console.log("starting rotate");
-            await stepTwoControls.start("rotate");
-        })();
-    }, [stepOneControls, stepTwoControls]);
+        if (props.run) {
+            (async function (): Promise<void> {
+                await stepOneControls.start("center");
+                await stepTwoControls.start("rotate");
+                props.setRun(false);
+            })();
+        }
+    }, [stepOneControls, stepTwoControls, props]);
 
     return (
-        <>
-            <motion.div
-                className={classes.animationContainer}
-                variants={containerVariants}
-                animate={stepTwoControls}
-                initial="begin"
-            >
-                <RectangleRotation controls={stepOneControls} />
-                <SemiCircles controls={stepOneControls} />
-                <motion.div
-                    className={classes.centerRectangle}
-                    variants={squareVariants}
-                    animate={stepOneControls}
-                />
-                <Corners controls={stepTwoControls} />
-                <CircleHex controls={stepTwoControls} />
-            </motion.div>
-        </>
+        <div className={classes.container}>
+            <AnimatePresence onExitComplete={() => props.setDisplay(false)}>
+                {props.run && (
+                    <motion.div
+                        className={classes.animationContainer}
+                        variants={containerVariants}
+                        animate={stepTwoControls}
+                        initial="begin"
+                        exit={exitAnim}
+                    >
+                        <RectangleSupports controls={stepOneControls} />
+                        <SemiCircles controls={stepOneControls} />
+                        <motion.div
+                            className={classes.centerRectangle}
+                            variants={squareVariants}
+                            animate={stepOneControls}
+                            exit={exitAnim}
+                        />
+                        <Corners controls={stepTwoControls} />
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
     );
 };
 
@@ -311,39 +351,45 @@ const SemiCircles: React.FunctionComponent<ControlProps> = (props) => {
 
     return (
         <>
-            {Array.from(Array(numSemiCircles).keys()).map((i) => {
-                return (
-                    <motion.div
-                        key={i}
-                        className={classes.outerSemiCircle}
-                        variants={semiCircleVariants}
-                        animate={props.controls}
-                        initial="begin"
-                        custom={i}
-                    >
-                        <div
-                            className={classes.innerSemiBorder}
-                            style={semiCircleStyle}
-                        />
-                        <div
-                            className={classes.semiCircle}
-                            style={semiCircleStyle}
-                        />
-                        <div
-                            className={clsx(
-                                classes.bottomBar,
-                                classes.bottomBarRight
-                            )}
-                        />
-                        <div
-                            className={clsx(
-                                classes.bottomBar,
-                                classes.bottomBarLeft
-                            )}
-                        />
-                    </motion.div>
-                );
-            })}
+            <motion.div
+                exit={exitAnim}
+                className={classes.semiCirclesContainer}
+            >
+                {Array.from(Array(numSemiCircles).keys()).map((i) => {
+                    return (
+                        <motion.div
+                            key={i}
+                            className={classes.outerSemiCircle}
+                            variants={semiCircleVariants}
+                            animate={props.controls}
+                            initial="begin"
+                            custom={i}
+                            exit={exitAnim}
+                        >
+                            <div
+                                className={classes.innerSemiBorder}
+                                style={semiCircleStyle}
+                            />
+                            <div
+                                className={classes.semiCircle}
+                                style={semiCircleStyle}
+                            />
+                            <div
+                                className={clsx(
+                                    classes.bottomBar,
+                                    classes.bottomBarRight
+                                )}
+                            />
+                            <div
+                                className={clsx(
+                                    classes.bottomBar,
+                                    classes.bottomBarLeft
+                                )}
+                            />
+                        </motion.div>
+                    );
+                })}
+            </motion.div>
         </>
     );
 };
@@ -370,7 +416,7 @@ const Corners: React.FunctionComponent<ControlProps> = (props) => {
         },
     };
     return (
-        <motion.div className={classes.cornerContainer}>
+        <motion.div className={classes.cornerContainer} exit={exitAnim}>
             {Array.from(Array(numCorners).keys()).map((i) => {
                 return (
                     <motion.div
@@ -384,6 +430,7 @@ const Corners: React.FunctionComponent<ControlProps> = (props) => {
                         key={i}
                         variants={variants}
                         animate={props.controls}
+                        exit={exitAnim}
                     >
                         {renderCorner(i)}
                     </motion.div>
@@ -393,7 +440,7 @@ const Corners: React.FunctionComponent<ControlProps> = (props) => {
     );
 };
 
-const RectangleRotation: React.FunctionComponent<ControlProps> = (props) => {
+const RectangleSupports: React.FunctionComponent<ControlProps> = (props) => {
     const classes = useStyles();
     const numSides = 2;
     const variants = {
@@ -411,7 +458,7 @@ const RectangleRotation: React.FunctionComponent<ControlProps> = (props) => {
                     rectangleHeight
                 }px)`,
                 transition: {
-                    duration: 2,
+                    duration: stepTwoDuration,
                     ease: [0.42, 0.0, 0.58, 1.0],
                 },
             };
@@ -419,10 +466,14 @@ const RectangleRotation: React.FunctionComponent<ControlProps> = (props) => {
     };
 
     return (
-        <motion.div className={classes.rectanglesContainer}>
+        <motion.div className={classes.rectanglesContainer} exit={exitAnim}>
             {Array.from(Array(numSides).keys()).map((i) => {
                 return (
-                    <motion.div key={i} className={classes.rectangleContainer}>
+                    <motion.div
+                        key={i}
+                        className={classes.rectangleContainer}
+                        exit={exitAnim}
+                    >
                         <motion.div
                             className={clsx({
                                 [classes.rectangleSupport]: true,
@@ -452,73 +503,6 @@ const RectangleRotation: React.FunctionComponent<ControlProps> = (props) => {
                 );
             })}
         </motion.div>
-    );
-};
-
-const CircleHex: React.FunctionComponent<ControlProps> = (props) => {
-    const classes = useStyles();
-
-    const circleVariants = {
-        begin: {
-            scale: 1.5,
-            opacity: 0,
-        },
-        rotate: {
-            scale: 1,
-            opacity: 1,
-            transition: {
-                duration: stepTwoDuration - 1,
-                delay: 1,
-            },
-        },
-    };
-    const hexVariants = {
-        begin: {
-            scale: 0,
-        },
-        rotate: {
-            scale: 1,
-            transition: {
-                duration: stepTwoDuration - 1,
-                delay: 1,
-            },
-        },
-    };
-    const centerLineVariants = {
-        begin: {
-            scale: 0,
-        },
-        rotate: {
-            scale: 1,
-            transition: {
-                duration: stepTwoDuration - 2,
-                delay: 2,
-            },
-        },
-    };
-    return (
-        <>
-            <motion.div
-                className={classes.finalCircle}
-                variants={circleVariants}
-                animate={props.controls}
-                initial="begin"
-            />
-            <motion.div
-                className={classes.finalHex}
-                variants={hexVariants}
-                animate={props.controls}
-                initial="begin"
-            >
-                <Hexagon fill="white" side={20} />
-            </motion.div>
-            <motion.div
-                className={classes.finalCenterLine}
-                variants={centerLineVariants}
-                animate={props.controls}
-                initial="begin"
-            />
-        </>
     );
 };
 

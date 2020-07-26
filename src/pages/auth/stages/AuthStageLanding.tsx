@@ -12,16 +12,17 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { OAuthButtonGoogle, OAuthButtonGithub } from "../../../components/";
-import { useDispatch } from "react-redux";
-import { updateStage, AuthStage } from "../authSlice";
-
-interface SelectAuthType {
-    payload: AuthStage;
-    type: string;
-}
+import { useHistory } from "react-router";
+import { Routes } from "../../../app/constants/routes";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        contentContainer: {
+            flex: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+        },
         root: {
             display: "flex",
             flexDirection: "column",
@@ -74,8 +75,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const AuthStageLanding: React.FunctionComponent = (props) => {
     const classes = useStyles();
-    const dispatch = useDispatch();
+    const history = useHistory();
 
+    function handleUpdateStage(authStage: Routes): void {
+        history.push(authStage);
+    }
     return (
         <div className={classes.root}>
             <Typography className={classes.prompt} variant="h5">
@@ -87,9 +91,7 @@ const AuthStageLanding: React.FunctionComponent = (props) => {
                 <Button
                     variant={"outlined"}
                     className={classes.authButton}
-                    onClick={(): SelectAuthType =>
-                        dispatch(updateStage(AuthStage.SIGNUP))
-                    }
+                    onClick={(): void => handleUpdateStage(Routes.SIGNUP)}
                 >
                     SIGNUP
                 </Button>
@@ -99,9 +101,7 @@ const AuthStageLanding: React.FunctionComponent = (props) => {
                 <Button
                     variant={"outlined"}
                     className={classes.authButton}
-                    onClick={(): SelectAuthType =>
-                        dispatch(updateStage(AuthStage.LOGIN))
-                    }
+                    onClick={(): void => handleUpdateStage(Routes.LOGIN)}
                 >
                     LOGIN
                 </Button>

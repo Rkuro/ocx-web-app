@@ -77,6 +77,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface PanelProps {
+    disableAnimation?: boolean;
     inlineCorners?: boolean;
     corners?: boolean;
     borderTop?: boolean;
@@ -95,7 +96,10 @@ const Panel: React.FunctionComponent<PanelProps> = (props) => {
     const variants = {
         idle: {},
         flicker: {
-            opacity: props.flickerIn ? opacities : undefined,
+            opacity:
+                props.flickerIn && !props.disableAnimation
+                    ? opacities
+                    : undefined,
             transition: {
                 duration: 1,
                 times: props.flickerIn ? times : undefined,
@@ -170,7 +174,7 @@ const PanelCorners: React.FunctionComponent<PanelProps> = (props) => {
     };
 
     const transition = {
-        duration: 0.5,
+        duration: 0.2,
     };
 
     const exit = {
@@ -199,7 +203,7 @@ const PanelCorners: React.FunctionComponent<PanelProps> = (props) => {
                             ),
                         })}
                         variants={variants}
-                        animate="moving"
+                        animate={props.disableAnimation ? "" : "moving"}
                         custom={corner}
                         transition={transition}
                         exit={exit}

@@ -1,15 +1,16 @@
-import React from "react";
-import { makeStyles, createStyles } from "@material-ui/core";
-import { useSelector } from "react-redux";
-import { selectAuth, AuthStage } from "./authSlice";
-import AuthStageLanding from "./stages/AuthStageLanding";
-import AuthStageLogin from "./stages/AuthStageLogin";
+import React, { useEffect } from "react";
+import AuthRouter from "../../routers/AuthRouter";
 import { PageContainer, Panel } from "../../components";
+import { makeStyles, createStyles } from "@material-ui/styles";
+import { useSelector } from "react-redux";
+import { selectAuth } from "./authSlice";
+import { useHistory } from "react-router";
+import Routes from "../../app/constants/routes";
 
 const useStyles = makeStyles(() =>
     createStyles({
-        root: {
-            flex: "1",
+        contentContainer: {
+            flex: 1,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -17,28 +18,24 @@ const useStyles = makeStyles(() =>
     })
 );
 
-const renderSwitch = (stage: AuthStage): React.ReactNode => {
-    switch (stage) {
-        case AuthStage.LANDING:
-            return <AuthStageLanding />;
-        case AuthStage.LOGIN:
-            return <AuthStageLogin />;
-        default:
-            return null;
-    }
-};
-
 const Auth: React.FunctionComponent = () => {
     const classes = useStyles();
-    const auth = useSelector(selectAuth);
-    console.log("Auth State:", auth);
+    const authState = useSelector(selectAuth);
+    const history = useHistory();
+
+    useEffect(() => {
+        // If the user is authenticated, push to dashboard
+        if (authState.user != null) {
+            history.push(Routes.DASHBOARD);
+        }
+    }, [history, authState]);
 
     return (
         <>
-            <PageContainer nav flex>
-                <div className={classes.root}>
-                    <Panel corners inlineCorners borderBottom borderTop>
-                        {renderSwitch(auth.meta.stage)}
+            <PageContainer flex>
+                <div className={classes.contentContainer}>
+                    <Panel corners inlineCorners disableAnimation>
+                        <AuthRouter />
                     </Panel>
                 </div>
             </PageContainer>

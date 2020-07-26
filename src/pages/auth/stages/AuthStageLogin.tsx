@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Typography,
     makeStyles,
@@ -9,8 +9,13 @@ import {
     TextField,
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import { useDispatch } from "react-redux";
-import { AuthStage, updateStage, AuthDispatchReturn } from "../authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAuth, AuthenticatePayload } from "../authSlice";
+import { authenticateThunk } from "../authSlice";
+import { useHistory } from "react-router-dom";
+import Routes from "../../../app/constants/routes";
+import { LoaderContained } from "../../../components";
+import FadeContainer from "../../../components/animated/fade-container/FadeContainer";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -31,40 +36,87 @@ const useStyles = makeStyles((theme: Theme) =>
             display: "flex",
             flexDirection: "column",
         },
-        input: {},
+        input: {
+            margin: `${theme.spacing(1)}px 0`,
+        },
         submitButton: {
             marginTop: theme.spacing(3),
+        },
+        errorText: {
+            display: "flex",
+            justifyContent: "center",
+            color: theme.palette.error.light,
+            padding: theme.spacing(1),
         },
     })
 );
 
-const AuthStageLogin: React.FunctionComponent = (props) => {
+const AuthStageLogin: React.FunctionComponent = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const [emailInput] = useState("");
-    // const [passwordInput, setPasswordInput] = useState("");
+    const history = useHistory();
+    const authState = useSelector(selectAuth);
+    const [emailInput, setEmailInput] = useState("");
+    const [passwordInput, setPasswordInput] = useState("");
+    const [userAttemptedSubmission, setUserAttemptedSubmission] = useState(
+        false
+    );
+
+    const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+        e.preventDefault(); // Stop auto-page reload
+        console.log("handling submit!", emailInput, passwordInput);
+        const payload: AuthenticatePayload = {
+            creds: {
+                email: emailInput,
+                password: passwordInput,
+            },
+        };
+        await dispatch(authenticateThunk(payload));
+        setUserAttemptedSubmission(true);
+    };
+
+    useEffect(() => {
+        if (authState.user !== null) {
+            console.log(
+                "[Auth Login] Redirecting authenticated user to dashboard"
+            );
+            history.push(Routes.DASHBOARD);
+        }
+    }, [authState.user, history]);
+
+    console.log(
+        "Auth stage login render:",
+        emailInput,
+        userAttemptedSubmission
+    );
+
+    // Only show error if error is not null and they attempted to submit already
+    const shouldShowErrorText =
+        authState.error != null && userAttemptedSubmission;
 
     return (
         <>
             <div className={classes.root}>
+                {authState.loading && <LoaderContained />}
                 <div className={classes.backContainer}>
                     <Button
                         className={classes.backButton}
-                        onClick={(): AuthDispatchReturn =>
-                            dispatch(updateStage(AuthStage.LANDING))
-                        }
+                        onClick={(): void => history.push(Routes.AUTH)}
                     >
                         <ArrowBackIcon />
                     </Button>
-                    <Typography className={classes.prompt} variant="h5">
-                        Please enter your email
-                    </Typography>
+                    <Typography
+                        className={classes.prompt}
+                        variant="h5"
+                    ></Typography>
                 </div>
                 <Divider flexItem />
-                <form
-                    className={classes.form}
-                    onSubmit={(): void => console.log("emailinput", emailInput)}
-                >
+                <FadeContainer show={shouldShowErrorText}>
+                    <div className={classes.errorText}>
+                        <Typography>{authState.error?.message}</Typography>
+                    </div>
+                </FadeContainer>
+                <form className={classes.form} onSubmit={handleSubmit}>
                     <TextField
                         id="email"
                         type="email"
@@ -72,6 +124,10 @@ const AuthStageLogin: React.FunctionComponent = (props) => {
                         label="Email"
                         variant="outlined"
                         color="secondary"
+                        autoComplete="username"
+                        onChange={(e): void =>
+                            setEmailInput(e.currentTarget.value)
+                        }
                     />
                     <TextField
                         id="password"
@@ -80,6 +136,10 @@ const AuthStageLogin: React.FunctionComponent = (props) => {
                         label="Password"
                         variant="outlined"
                         color="secondary"
+                        autoComplete="current-password"
+                        onChange={(e): void =>
+                            setPasswordInput(e.currentTarget.value)
+                        }
                     />
                     <Button
                         className={classes.submitButton}

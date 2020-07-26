@@ -4,6 +4,7 @@ enum slices {
     GREETING = "greeting",
     AUTH = "auth",
     APP = "app",
+    ANIMATION = "animation",
 }
 
 export default slices;

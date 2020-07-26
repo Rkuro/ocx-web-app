@@ -22,9 +22,16 @@ import config from "./config.json";
 
 const app = feathers();
 
-app.configure(
-    feathers.rest(process.env["REACT_APP_API_ENDPOINT_URL"]).axios(axios)
-);
+const getEndpointFromEnvironment = (): string | undefined => {
+    switch (process.env.NODE_ENV) {
+        case "development":
+            return process.env["REACT_APP_API_ENDPOINT_DEV"];
+        case "production":
+            return process.env["REACT_APP_API_ENDPOINT_PROD"];
+    }
+};
+
+app.configure(feathers.rest(getEndpointFromEnvironment()).axios(axios));
 app.configure(feathers.authentication({ ...config.auth }));
 
 export const userService = app.service("users");

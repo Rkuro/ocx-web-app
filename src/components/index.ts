@@ -1,5 +1,6 @@
 import GreetingText from "./animated/greeting-text/GreetingText";
 import LoaderFull from "./loader-full/LoaderFull";
+import LoaderContained from "./loader-contained/LoaderContained";
 import Nav from "./nav/Nav";
 import PageContainer from "./page-container/PageContainer";
 import Panel from "./panel/Panel";
@@ -21,6 +22,7 @@ export {
     Nav,
     PageContainer,
     Panel,
+    LoaderContained,
 };
 
 export * from "./animated";
