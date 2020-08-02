@@ -6,6 +6,7 @@ import { useHistory } from "react-router";
 import Routes from "../../app/constants/routes";
 import { makeStyles, createStyles } from "@material-ui/styles";
 import { Grid, Typography, Theme, Button } from "@material-ui/core";
+import BackgroundStatisticsGeneric from "../../components/animated/background-statistics/BackgroundStatisticsGeneric";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: "space-evenly",
             flexDirection: "column",
             alignItems: "center",
+            padding: `0 ${theme.spacing(2)}px`,
         },
         actionHeader: {
             padding: theme.spacing(2),
@@ -53,50 +55,37 @@ const DashboardLanding: React.FunctionComponent = () => {
     return (
         <PageContainer flex>
             <BackgroundRandomLines />
+            <BackgroundStatisticsGeneric />
 
             <div className={classes.container}>
                 <div className={classes.headerContainer}>
-                    <Typography variant="h2">
+                    <Typography variant="h4">
                         How would you like to use OpenCreditX
                     </Typography>
                 </div>
                 <div className={classes.contentContainer}>
                     <Grid container justify="space-evenly">
                         <Grid item xs={12} md={3}>
-                            <Panel corners>
+                            <Panel corners href={Routes.LENDER_DASHBOARD}>
                                 <div className={classes.actionContainer}>
                                     <Typography
-                                        variant="h4"
+                                        variant="body1"
                                         className={classes.actionHeader}
                                     >
-                                        Lender
+                                        Financial Institution
                                     </Typography>
-                                    <Button
-                                        variant="contained"
-                                        color="secondary"
-                                        href={Routes.LENDER_DASHBOARD}
-                                    >
-                                        View Dashboard
-                                    </Button>
                                 </div>
                             </Panel>
                         </Grid>
                         <Grid item xs={12} md={3}>
-                            <Panel corners>
+                            <Panel corners href={Routes.LENDEE_DASHBOARD}>
                                 <div className={classes.actionContainer}>
                                     <Typography
-                                        variant="h4"
+                                        variant="body1"
                                         className={classes.actionHeader}
                                     >
-                                        Lendee
+                                        Individual
                                     </Typography>
-                                    <Button
-                                        variant="contained"
-                                        color="secondary"
-                                        href={Routes.LENDEE_DASHBOARD}
-                                    >
-                                        View Dashboard
-                                    </Button>
                                 </div>
                             </Panel>
                         </Grid>

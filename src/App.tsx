@@ -22,9 +22,12 @@ const App: React.FunctionComponent = () => {
 
     return (
         <div className="App">
-            <Backdrop open={authState.loading}>
-                <CircularProgress color="inherit" />
-            </Backdrop>
+            {authState.loading && (
+                <Backdrop open={authState.loading}>
+                    <CircularProgress color="inherit" />
+                </Backdrop>
+            )}
+
             {!authState.loading && <Router />}
         </div>
     );

@@ -19,24 +19,7 @@ export const getLinearGradient = (colorA: string, colorB: string): string => {
 
 type BreakpointOrNull = Breakpoint | null;
 
-/**
- * Be careful using this hook. It only works because the number of
- * breakpoints in theme is static. It will break once you change the number of
- * breakpoints. See https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level
- */
-// export const useWidth = (): BreakpointOrNull => {
-//     const theme: Theme = useTheme();
-//     const keys: Breakpoint[] = [...theme.breakpoints.keys].reverse();
-//     return (
-//         keys.reduce((output: BreakpointOrNull, key: Breakpoint) => {
-//             // eslint-disable-next-line react-hooks/rules-of-hooks
-//             const matches = useMediaQuery(theme.breakpoints.up(key));
-//             return !output && matches ? key : output;
-//         }, null) || "xs"
-//     );
-// };
-
-export const useWidth = () => {
+export const useWidth = (): BreakpointOrNull => {
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.up("xs"));
     const isSm = useMediaQuery(theme.breakpoints.up("sm"));

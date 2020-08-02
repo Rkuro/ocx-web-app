@@ -1,14 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
+import { useWidth, isMobile } from "../../utils/StyleFunctions";
+import DashboardSidebarMobile from "./DashboardSidebarMobile";
+import DashboardSidebarDesktop from "./DashboardSidebarDesktop";
 
-interface DashboardSidebarProps {
+export interface DashboardSidebarChildProps {
     collapsed: boolean;
+    setCollapsed: (collapsed: boolean) => void;
 }
 
-const DashboardSidebar: React.FunctionComponent<DashboardSidebarProps> = (
-    props
-) => {
-    // const animateSidebar = {
-    //     width:
-    // }
-    return <div></div>;
+const DashboardSidebarWrapper: React.FunctionComponent = (props) => {
+    const width = useWidth();
+    const [collapsed, setCollapsed] = useState(!isMobile(width));
+
+    return isMobile(width) ? (
+        <DashboardSidebarMobile
+            collapsed={collapsed}
+            setCollapsed={setCollapsed}
+            {...props}
+        />
+    ) : (
+        <DashboardSidebarDesktop
+            collapsed={collapsed}
+            setCollapsed={setCollapsed}
+            {...props}
+        />
+    );
 };
+
+export default DashboardSidebarWrapper;

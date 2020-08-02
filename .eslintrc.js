@@ -16,12 +16,6 @@ module.exports = {
         },
     },
     rules: {
-        "@typescript-eslint/interface-name-prefix": [
-            "error",
-            {
-                prefixWithI: "never",
-            },
-        ],
         "@typescript-eslint/no-empty-interface": [
             "error",
             {

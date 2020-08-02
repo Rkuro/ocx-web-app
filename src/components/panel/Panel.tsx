@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core";
 import clsx from "clsx";
 import { themeExtras } from "../../theme";
 import { motion, MotionProps } from "framer-motion";
 import { useFlickerAnimations } from "../../utils/AnimationGenerators";
 import { getLinearGradient } from "../../utils/StyleFunctions";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        linkWrapper: {
+            textDecoration: "none",
+            color: theme.palette.text.primary,
+        },
         container: {
             position: "relative",
             padding: theme.spacing(4),
@@ -87,11 +92,28 @@ interface PanelProps {
     success?: boolean;
     panelMotion?: MotionProps;
     cornersMotion?: MotionProps;
+    href?: string;
 }
+
+interface PanelCornerProps extends PanelProps {
+    hoverActive: boolean;
+}
+
+const PanelWrapper: React.FunctionComponent<PanelProps> = (props) => {
+    const classes = useStyles();
+    return props.href ? (
+        <Link to={props.href} className={classes.linkWrapper}>
+            <Panel {...props} />
+        </Link>
+    ) : (
+        <Panel {...props} />
+    );
+};
 
 const Panel: React.FunctionComponent<PanelProps> = (props) => {
     const classes = useStyles();
     const { opacities, times } = useFlickerAnimations();
+    const [hoverActive, setHoverActive] = useState(false);
 
     const variants = {
         idle: {},
@@ -120,9 +142,13 @@ const Panel: React.FunctionComponent<PanelProps> = (props) => {
             animate="flicker"
             variants={variants}
             exit={{ opacity: 0 }}
+            onMouseOver={() => setHoverActive(true)}
+            onMouseLeave={() => setHoverActive(false)}
             {...props.panelMotion}
         >
-            {props.corners && <PanelCorners {...props} />}
+            {props.corners && (
+                <PanelCorners hoverActive={hoverActive} {...props} />
+            )}
             {props.children}
         </motion.div>
     );
@@ -145,7 +171,7 @@ const getCornerStartPoint = (corner: string): string => {
     const startOffset = 48;
     switch (corner) {
         case "topLeft":
-            return `${startOffset}%, ${startOffset}%, 0`;
+            return `${startOffset}px, ${startOffset}px, 0`;
         case "topRight":
             return `-${startOffset}px, ${startOffset}px, 0`;
         case "bottomRight":
@@ -157,18 +183,48 @@ const getCornerStartPoint = (corner: string): string => {
     }
 };
 
+const getCornerHoverPoint = (corner: string): string => {
+    const offset = 5;
+    switch (corner) {
+        case "topLeft":
+            return `-${offset}px, -${offset}px, 0`;
+        case "topRight":
+            return `${offset}px, -${offset}px, 0`;
+        case "bottomRight":
+            return `${offset}px, ${offset}px, 0`;
+        case "bottomLeft":
+            return `-${offset}px, ${offset}px, 0`;
+        default:
+            return "0px, 0px, 0px";
+    }
+};
+
 // Work clockwise starting from the top left
-const PanelCorners: React.FunctionComponent<PanelProps> = (props) => {
+const PanelCorners: React.FunctionComponent<PanelCornerProps> = (props) => {
     const classes = useStyles();
     const corners = ["topLeft", "topRight", "bottomRight", "bottomLeft"];
 
     const variants = {
-        moving: (corner: string): object => {
+        moving: (corner: string): Record<string, unknown> => {
             return {
                 transform: [
                     `translate3d(${getCornerStartPoint(corner)})`,
                     `translate3d(0px, 0px, 0px)`,
                 ],
+            };
+        },
+        hover: (corner: string): Record<string, unknown> => {
+            // Handle moving the corners when the mouse hovers over the element
+            return {
+                transform: [
+                    `translate3d(0px, 0px, 0px)`,
+                    `translate3d(${getCornerHoverPoint(corner)})`,
+                ],
+            };
+        },
+        rest: (corner: string): Record<string, unknown> => {
+            return {
+                transform: "translate3d(0px, 0px, 0px)",
             };
         },
     };
@@ -180,6 +236,15 @@ const PanelCorners: React.FunctionComponent<PanelProps> = (props) => {
     const exit = {
         opacity: 0,
     };
+
+    let animate: string;
+    if (props.disableAnimation) {
+        animate = "";
+    } else if (props.hoverActive) {
+        animate = "hover";
+    } else {
+        animate = "rest";
+    }
 
     return (
         <>
@@ -203,7 +268,8 @@ const PanelCorners: React.FunctionComponent<PanelProps> = (props) => {
                             ),
                         })}
                         variants={variants}
-                        animate={props.disableAnimation ? "" : "moving"}
+                        animate={animate}
+                        initial="moving"
                         custom={corner}
                         transition={transition}
                         exit={exit}
@@ -215,4 +281,4 @@ const PanelCorners: React.FunctionComponent<PanelProps> = (props) => {
     );
 };
 
-export default Panel;
+export default PanelWrapper;

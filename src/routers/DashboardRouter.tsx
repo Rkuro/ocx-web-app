@@ -8,11 +8,19 @@ import DashboardLender from "../pages/dashboard/lender/DashboardLender";
 const DashboardRouter: React.FunctionComponent = () => {
     return (
         <Switch>
-            <Route path={Routes.LENDEE_DASHBOARD} component={DashboardLendee} />
-            <Route path={Routes.LENDER_DASHBOARD} component={DashboardLender} />
+            <Route
+                exact
+                path={Routes.LENDEE_DASHBOARD}
+                component={DashboardLendee}
+            />
+            <Route
+                exact
+                path={Routes.LENDER_DASHBOARD}
+                component={DashboardLender}
+            />
             <Route path={Routes.DASHBOARD} component={DashboardLanding} />
         </Switch>
     );
 };
 
-export default DashboardRouter
+export default DashboardRouter;
