@@ -5,7 +5,7 @@ import { selectAuth } from "../auth/authSlice";
 import { useHistory } from "react-router";
 import Routes from "../../app/constants/routes";
 import { makeStyles, createStyles } from "@material-ui/styles";
-import { Grid, Typography, Theme, Button } from "@material-ui/core";
+import { Grid, Typography, Theme } from "@material-ui/core";
 import BackgroundStatisticsGeneric from "../../components/animated/background-statistics/BackgroundStatisticsGeneric";
 
 const useStyles = makeStyles((theme: Theme) =>
