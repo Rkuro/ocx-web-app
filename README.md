@@ -1,8 +1,11 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/b14bb33a-b300-486b-9da1-56398405b5e4/deploy-status)](https://app.netlify.com/sites/gallant-leavitt-2d45a6/deploys)
 
+[![Depfu](https://badges.depfu.com/badges/cd8664a95d2506b64906a300097dfcf8/overview.svg)](https://depfu.com/github/Rkuro/personal-website?project_id=18379)
+
 ## OpenCreditX Web Application (Frontend)
 
 # Technology Stack
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
 ## Available Scripts
@@ -36,7 +39,3 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 Check out our website: [link](https://opencreditx.com)
 And our developer documentation: [link](https://opencreditx-admin.gitbook.io/opencreditx/)
-
-
-
-
