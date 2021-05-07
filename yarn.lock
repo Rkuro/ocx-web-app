@@ -1202,10 +1202,10 @@
     long-timeout "^0.1.1"
     uuid "^8.2.0"
 
-"@feathersjs/client@^4.5.7":
-  version "4.5.7"
-  resolved "https://registry.yarnpkg.com/@feathersjs/client/-/client-4.5.7.tgz#552c3438e31d20945aa70c18bbe5304467c35e09"
-  integrity sha512-X9wfdJ/sYFt7yGIxmVT4vMzCKnyX4EufC89YVlZo0Jf2fbAJCiXLT2oG50Febfg/2ExPd644uxCGdzWxFXXwEw==
+"@feathersjs/client@^4.5.11":
+  version "4.5.11"
+  resolved "https://registry.yarnpkg.com/@feathersjs/client/-/client-4.5.11.tgz#fa1b8d5342ce9d8d424edc01d914a6905b71ea7f"
+  integrity sha512-DhYnuPkaDw6QitlfReheKqufKSy8ryzoMkrFWBto89PeUaKUp3pQkjOJQg+LRdxNrHNJmjOoYQ0uZzZRlO71+g==
 
 "@feathersjs/commons@^4.5.11":
   version "4.5.11"
@@ -11521,10 +11521,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@~3.9.7:
-  version "3.9.7"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.7.tgz#98d600a5ebdc38f40cb277522f12dc800e9e25fa"
-  integrity sha512-BLbiRkiBzAwsjut4x/dsibSTB6yWpwT5qWmC2OfuCg3GgVQCSgMs4vEctYPhsaGtd0AeuuHMkjZ2h2WG8MSzRw==
+typescript@~4.2.3:
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.4.tgz#8610b59747de028fda898a8aef0e103f156d0961"
+  integrity sha512-V+evlYHZnQkaz8TRBuxTA92yZBPotr5H+WhQ7bD3hZUndx5tGOa1fuCgeSjxAzM1RiN5IzvadIXTVefuuwZCRg==
 
 uberproto@^2.0.6:
   version "2.0.6"
