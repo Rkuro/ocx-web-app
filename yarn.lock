@@ -1209,10 +1209,10 @@
     long-timeout "^0.1.1"
     uuid "^8.2.0"
 
-"@feathersjs/client@^4.5.7":
-  version "4.5.7"
-  resolved "https://registry.yarnpkg.com/@feathersjs/client/-/client-4.5.7.tgz#552c3438e31d20945aa70c18bbe5304467c35e09"
-  integrity sha512-X9wfdJ/sYFt7yGIxmVT4vMzCKnyX4EufC89YVlZo0Jf2fbAJCiXLT2oG50Febfg/2ExPd644uxCGdzWxFXXwEw==
+"@feathersjs/client@^4.5.11":
+  version "4.5.11"
+  resolved "https://registry.yarnpkg.com/@feathersjs/client/-/client-4.5.11.tgz#fa1b8d5342ce9d8d424edc01d914a6905b71ea7f"
+  integrity sha512-DhYnuPkaDw6QitlfReheKqufKSy8ryzoMkrFWBto89PeUaKUp3pQkjOJQg+LRdxNrHNJmjOoYQ0uZzZRlO71+g==
 
 "@feathersjs/commons@^4.5.11":
   version "4.5.11"
