@@ -79,7 +79,7 @@
         ]
     },
     "devDependencies": {
-        "@svgr/cli": "^5.4.0",
+        "@svgr/cli": "^5.5.0",
         "@typescript-eslint/eslint-plugin": "^3.7.0",
         "@typescript-eslint/parser": "^3.7.0",
         "eslint-config-prettier": "^6.11.0",
