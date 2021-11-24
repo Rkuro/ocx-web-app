@@ -47,7 +47,7 @@
         "react-spring": "^8.0.27",
         "react-svg": "^11.0.32",
         "react-svg-hexagon": "^1.0.0",
-        "react-transition-group": "^4.4.1",
+        "react-transition-group": "^4.4.2",
         "react-typist": "^2.0.5",
         "reflect-metadata": "^0.1.13",
         "styled-components": "^5.1.1",
