@@ -1,4 +1,3 @@
-/* eslint @typescript-eslint/ban-ts-ignore: 0 */
 import React, { useState, useEffect } from "react";
 import { Typography } from "@material-ui/core";
 import { setFinished } from "./greetingSlice";
