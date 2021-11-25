@@ -37,9 +37,9 @@ const useStyles = makeStyles(() =>
     })
 );
 
-const DashboardSidebarMobile: React.FunctionComponent<DashboardSidebarChildProps> = (
-    props
-) => {
+const DashboardSidebarMobile: React.FunctionComponent<
+    DashboardSidebarChildProps
+> = (props) => {
     const classes = useStyles();
     const triggerVariants = {
         open: {

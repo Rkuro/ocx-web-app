@@ -4,7 +4,7 @@ import { PageContainer, Panel } from "../../components";
 import { makeStyles, createStyles } from "@material-ui/styles";
 import { useSelector } from "react-redux";
 import { selectAuth } from "./authSlice";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import Routes from "../../app/constants/routes";
 
 const useStyles = makeStyles(() =>
@@ -21,14 +21,14 @@ const useStyles = makeStyles(() =>
 const Auth: React.FunctionComponent = () => {
     const classes = useStyles();
     const authState = useSelector(selectAuth);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     useEffect(() => {
         // If the user is authenticated, push to dashboard
         if (authState.user != null) {
-            history.push(Routes.DASHBOARD);
+            navigate(Routes.DASHBOARD);
         }
-    }, [history, authState]);
+    }, [navigate, authState]);
 
     return (
         <>

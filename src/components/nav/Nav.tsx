@@ -2,8 +2,6 @@ import React from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { Hidden } from "@material-ui/core";
 import { themeExtras } from "../../theme";
-// import { Link } from "react-router-dom";
-// import Routes from "../../app/constants/routes";
 
 const useNavStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -26,7 +24,7 @@ const useNavStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export default function Nav() {
+export default function Nav(): React.ReactElement {
     const classes = useNavStyles();
 
     return (

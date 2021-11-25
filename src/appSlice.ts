@@ -18,7 +18,7 @@ const appSlice = createSlice({
     extraReducers: {},
 });
 
-export const selectInitialState = (state: RootState) => {
+export const selectInitialState = (state: RootState): AppState => {
     return state.app;
 };
 

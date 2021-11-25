@@ -1,10 +1,10 @@
 import React from "react";
-import { Button, makeStyles, createStyles, Theme } from "@material-ui/core";
+import { Button, makeStyles, createStyles } from "@material-ui/core";
 import GithubLogo from "../../assets/github/GitHub-Logos/GitHub_Logo_White.png";
 import GithubMark from "../../assets/github/GitHub-Mark/PNG/GitHub-Mark-Light-32px.png";
 import { OAuthButtonStyle } from "../../app/constants/styles";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         button: {
             ...OAuthButtonStyle,
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export const OAuthButtonGithub: React.FunctionComponent = (props) => {
+export const OAuthButtonGithub: React.FunctionComponent = () => {
     const classes = useStyles();
     return (
         <Button className={classes.button}>

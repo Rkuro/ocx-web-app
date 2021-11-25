@@ -8,7 +8,9 @@ const useStyles = makeStyles(() =>
     })
 );
 
-const DashboardSidebarDesktop: React.FunctionComponent<DashboardSidebarChildProps> = () => {
+const DashboardSidebarDesktop: React.FunctionComponent<
+    DashboardSidebarChildProps
+> = () => {
     const classes = useStyles();
     return (
         <React.Fragment>

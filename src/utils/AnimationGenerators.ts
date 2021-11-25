@@ -36,7 +36,7 @@ export const generateRandomValues = (
     numValues: number,
     range: Range
 ): number[] => {
-    return Array.from(Array(numValues)).map((i) =>
+    return Array.from(Array(numValues)).map(() =>
         mapValue(0, 1, range[0], range[1], Math.random())
     );
 };

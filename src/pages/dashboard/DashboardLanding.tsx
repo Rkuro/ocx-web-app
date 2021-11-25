@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { PageContainer, BackgroundRandomLines, Panel } from "../../components";
 import { useSelector } from "react-redux";
 import { selectAuth } from "../auth/authSlice";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import Routes from "../../app/constants/routes";
 import { makeStyles, createStyles } from "@material-ui/styles";
 import { Grid, Typography, Theme } from "@material-ui/core";
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const DashboardLanding: React.FunctionComponent = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const authState = useSelector(selectAuth);
     const classes = useStyles();
 
@@ -49,7 +49,7 @@ const DashboardLanding: React.FunctionComponent = () => {
         if (authState.user === null) {
             // history.push(Routes.AUTH);
         }
-    }, [authState, history]);
+    }, [authState, navigate]);
     console.log("[Dashboard] rendering - ", authState);
 
     return (

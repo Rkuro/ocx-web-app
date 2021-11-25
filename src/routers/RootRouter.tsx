@@ -1,17 +1,23 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Routes } from "../app/constants/routes";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Routes as LocalRoutes } from "../app/constants/routes";
 import { Auth, Landing } from "../pages";
 import Dashboard from "../pages/dashboard/Dashboard";
 
 const RootRouter: React.FunctionComponent = () => {
     return (
         <Router>
-            <Switch>
-                <Route path={Routes.AUTH} component={Auth} />
-                <Route path={Routes.DASHBOARD} component={Dashboard} />
-                <Route path={Routes.HOME} component={Landing} />
-            </Switch>
+            <Routes>
+                <Route path={LocalRoutes.AUTH}>
+                    <Auth />
+                </Route>
+                <Route path={LocalRoutes.DASHBOARD}>
+                    <Dashboard />
+                </Route>
+                <Route path={LocalRoutes.HOME}>
+                    <Landing />
+                </Route>
+            </Routes>
         </Router>
     );
 };
