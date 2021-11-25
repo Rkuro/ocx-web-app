@@ -9,15 +9,15 @@ const AuthRouter: React.FunctionComponent = () => {
     return (
         <>
             <Routes>
-                <Route path={LocalRoutes.LOGIN}>
-                    <AuthStageLogin />
-                </Route>
-                <Route path={LocalRoutes.SIGNUP}>
-                    <AuthStageSignup />
-                </Route>
-                <Route path={LocalRoutes.AUTH}>
-                    <AuthStageLanding />
-                </Route>
+                <Route path={LocalRoutes.LOGIN} element={<AuthStageLogin />} />
+                <Route
+                    path={LocalRoutes.SIGNUP}
+                    element={<AuthStageSignup />}
+                />
+                <Route
+                    path={LocalRoutes.LANDING}
+                    element={<AuthStageLanding />}
+                />
             </Routes>
         </>
     );
