@@ -8,15 +8,18 @@ import DashboardLender from "../pages/dashboard/lender/DashboardLender";
 const DashboardRouter: React.FunctionComponent = () => {
     return (
         <Routes>
-            <Route path={LocalRoutes.LENDEE_DASHBOARD}>
-                <DashboardLendee />
-            </Route>
-            <Route path={LocalRoutes.LENDER_DASHBOARD}>
-                <DashboardLender />
-            </Route>
-            <Route path={LocalRoutes.DASHBOARD}>
-                <DashboardLanding />
-            </Route>
+            <Route
+                path={LocalRoutes.LENDEE_DASHBOARD}
+                element={<DashboardLendee />}
+            />
+            <Route
+                path={LocalRoutes.LENDER_DASHBOARD}
+                element={<DashboardLender />}
+            />
+            <Route
+                path={LocalRoutes.DASHBOARD}
+                element={<DashboardLanding />}
+            />
         </Routes>
     );
 };

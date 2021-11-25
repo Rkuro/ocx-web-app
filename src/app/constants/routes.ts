@@ -1,11 +1,12 @@
 export enum Routes {
     HOME = "/",
-    AUTH = "/auth",
-    LOGIN = "/auth/login",
-    SIGNUP = "/auth/signup",
-    DASHBOARD = "/dashboard",
-    LENDER_DASHBOARD = "/dashboard/lender",
-    LENDEE_DASHBOARD = "/dashboard/lendee",
+    AUTH = "auth/*",
+    LOGIN = "login",
+    SIGNUP = "signup",
+    LANDING = "landing",
+    DASHBOARD = "dashboard/*",
+    LENDER_DASHBOARD = "lender",
+    LENDEE_DASHBOARD = " lendee",
 }
 
 export default Routes;

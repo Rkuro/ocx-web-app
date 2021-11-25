@@ -8,15 +8,9 @@ const RootRouter: React.FunctionComponent = () => {
     return (
         <Router>
             <Routes>
-                <Route path={LocalRoutes.AUTH}>
-                    <Auth />
-                </Route>
-                <Route path={LocalRoutes.DASHBOARD}>
-                    <Dashboard />
-                </Route>
-                <Route path={LocalRoutes.HOME}>
-                    <Landing />
-                </Route>
+                <Route path={LocalRoutes.AUTH} element={<Auth />} />
+                <Route path={LocalRoutes.DASHBOARD} element={<Dashboard />} />
+                <Route path={LocalRoutes.HOME} element={<Landing />} />
             </Routes>
         </Router>
     );
