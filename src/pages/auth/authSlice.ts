@@ -10,7 +10,7 @@ import {
 import { User } from "../../app/types";
 
 export interface AuthState {
-    meta: {};
+    meta: Record<string, unknown>;
     loading: boolean;
     error: null | Error;
     user: null | User;

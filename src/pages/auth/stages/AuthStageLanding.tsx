@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { OAuthButtonGoogle, OAuthButtonGithub } from "../../../components/";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { Routes } from "../../../app/constants/routes";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -73,12 +73,12 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-const AuthStageLanding: React.FunctionComponent = (props) => {
+const AuthStageLanding: React.FunctionComponent = () => {
     const classes = useStyles();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     function handleUpdateStage(authStage: Routes): void {
-        history.push(authStage);
+        navigate(authStage);
     }
     return (
         <div className={classes.root}>

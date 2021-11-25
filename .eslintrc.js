@@ -7,7 +7,7 @@ module.exports = {
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:react/recommended",
-        "prettier/@typescript-eslint",
+        "prettier",
         "plugin:prettier/recommended",
     ],
     settings: {
@@ -22,6 +22,6 @@ module.exports = {
                 allowSingleExtends: true,
             },
         ],
-        "react/prop-types": 0
+        "react/prop-types": 0,
     },
 };

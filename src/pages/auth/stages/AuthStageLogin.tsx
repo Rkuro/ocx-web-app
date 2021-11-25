@@ -12,7 +12,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAuth, AuthenticatePayload } from "../authSlice";
 import { authenticateThunk } from "../authSlice";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Routes from "../../../app/constants/routes";
 import { LoaderContained } from "../../../components";
 import FadeContainer from "../../../components/animated/fade-container/FadeContainer";
@@ -54,13 +54,12 @@ const useStyles = makeStyles((theme: Theme) =>
 const AuthStageLogin: React.FunctionComponent = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const authState = useSelector(selectAuth);
     const [emailInput, setEmailInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
-    const [userAttemptedSubmission, setUserAttemptedSubmission] = useState(
-        false
-    );
+    const [userAttemptedSubmission, setUserAttemptedSubmission] =
+        useState(false);
 
     const handleSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault(); // Stop auto-page reload
@@ -80,9 +79,9 @@ const AuthStageLogin: React.FunctionComponent = () => {
             console.log(
                 "[Auth Login] Redirecting authenticated user to dashboard"
             );
-            history.push(Routes.DASHBOARD);
+            navigate(Routes.DASHBOARD);
         }
-    }, [authState.user, history]);
+    }, [authState.user, navigate]);
 
     console.log(
         "Auth stage login render:",
@@ -101,7 +100,7 @@ const AuthStageLogin: React.FunctionComponent = () => {
                 <div className={classes.backContainer}>
                     <Button
                         className={classes.backButton}
-                        onClick={(): void => history.push(Routes.AUTH)}
+                        onClick={(): void => navigate(Routes.AUTH)}
                     >
                         <ArrowBackIcon />
                     </Button>

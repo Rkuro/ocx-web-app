@@ -20,12 +20,6 @@ interface BackgroundStatisticsConnectionProps {
 }
 
 const useNavigatorStats = () => {
-    // downlink: 9.7
-    // effectiveType: "4g"
-    // onChange: e => { console.log("connection changed:", e); }
-    // onchange: null
-    // rtt: 50
-    // saveData: false
     const navigator = window.navigator as any;
     return [
         {
@@ -47,9 +41,9 @@ const useNavigatorStats = () => {
     ];
 };
 
-const BackgroundStatisticsConnection: React.FunctionComponent<BackgroundStatisticsConnectionProps> = (
-    props
-) => {
+const BackgroundStatisticsConnection: React.FunctionComponent<
+    BackgroundStatisticsConnectionProps
+> = () => {
     const classes = useStyles();
     const navStats = useNavigatorStats();
 
@@ -57,7 +51,7 @@ const BackgroundStatisticsConnection: React.FunctionComponent<BackgroundStatisti
         <div className={classes.container}>
             {navStats
                 .filter((i) => i.value)
-                .map((obj) => {
+                .map(() => {
                     return null;
                 })}
         </div>

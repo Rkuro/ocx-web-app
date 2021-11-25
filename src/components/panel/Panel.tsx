@@ -222,7 +222,7 @@ const PanelCorners: React.FunctionComponent<PanelCornerProps> = (props) => {
                 ],
             };
         },
-        rest: (corner: string): Record<string, unknown> => {
+        rest: (): Record<string, unknown> => {
             return {
                 transform: "translate3d(0px, 0px, 0px)",
             };

@@ -18,9 +18,9 @@ interface BackgroundStatisticsGenericProps {
     containerStyle?: CSSProperties;
 }
 
-const BackgroundStatisticsGeneric: React.FunctionComponent<BackgroundStatisticsGenericProps> = (
-    props
-) => {
+const BackgroundStatisticsGeneric: React.FunctionComponent<
+    BackgroundStatisticsGenericProps
+> = (props) => {
     const classes = useStyles();
 
     return (
