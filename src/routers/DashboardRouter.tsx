@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Routes as LocalRoutes } from "../app/constants/routes";
+import { ROUTES as LocalRoutes } from "../app/constants/routes";
 import DashboardLanding from "../pages/dashboard/DashboardLanding";
 import DashboardLendee from "../pages/dashboard/dashboard-lendee/DashboardLendee";
 import DashboardLender from "../pages/dashboard/lender/DashboardLender";

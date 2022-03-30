@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import AuthRouter from "../../routers/AuthRouter";
 import { PageContainer, Panel } from "../../components";
 import { makeStyles, createStyles } from "@material-ui/styles";
 import { useSelector } from "react-redux";
 import { selectAuth } from "./authSlice";
 import { useNavigate } from "react-router";
-import Routes from "../../app/constants/routes";
+import { Outlet } from "react-router-dom";
+import ROUTES from "../../app/constants/routes";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -26,7 +26,7 @@ const Auth: React.FunctionComponent = () => {
     useEffect(() => {
         // If the user is authenticated, push to dashboard
         if (authState.user != null) {
-            navigate(Routes.DASHBOARD);
+            navigate(ROUTES.DASHBOARD);
         }
     }, [navigate, authState]);
 
@@ -35,7 +35,7 @@ const Auth: React.FunctionComponent = () => {
             <PageContainer flex>
                 <div className={classes.contentContainer}>
                     <Panel corners inlineCorners disableAnimation>
-                        <AuthRouter />
+                        <Outlet />
                     </Panel>
                 </div>
             </PageContainer>

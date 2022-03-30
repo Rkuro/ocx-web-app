@@ -2,7 +2,8 @@ import React from "react";
 import { makeStyles, createStyles } from "@material-ui/styles";
 import { Theme, Grid, Button } from "@material-ui/core";
 import { motion } from "framer-motion";
-import Routes from "../../app/constants/routes";
+import ROUTES, { joinRoutes } from "../../app/constants/routes";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -21,6 +22,9 @@ const useStyles = makeStyles((theme: Theme) =>
             flex: 1,
             alignItems: "center",
             justifyContent: "space-around",
+        },
+        link: {
+            textDecoration: "none",
         },
     })
 );
@@ -42,13 +46,14 @@ const InitialView: React.FunctionComponent = () => {
                 <Grid item xs={12}>
                     <div className={classes.initialPanelContainer}>
                         <motion.div animate={{ opacity: 1 }}>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                href={Routes.AUTH}
+                            <Link
+                                className={classes.link}
+                                to={joinRoutes(ROUTES.AUTH)}
                             >
-                                Get Started
-                            </Button>
+                                <Button variant="contained" color="secondary">
+                                    Get Started
+                                </Button>
+                            </Link>
                         </motion.div>
                     </div>
                 </Grid>
