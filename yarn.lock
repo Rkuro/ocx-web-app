@@ -1366,6 +1366,21 @@
     long-timeout "^0.1.1"
     uuid "^8.3.1"
 
+"@feathersjs/authentication@^4.5.12":
+  version "4.5.12"
+  resolved "https://registry.yarnpkg.com/@feathersjs/authentication/-/authentication-4.5.12.tgz#fbe508b63fe51f1986e8be898b900709166f16a3"
+  integrity sha512-qNLSlSZ0lCM77ELf7Ae+mkgXE1HafwWU2q/2MbSQfva1zUTo34O59JHa3PKmDK+TqAQwYQVlAY9IR6SmK+MW1g==
+  dependencies:
+    "@feathersjs/errors" "^4.5.12"
+    "@feathersjs/feathers" "^4.5.12"
+    "@feathersjs/transport-commons" "^4.5.12"
+    "@types/jsonwebtoken" "^8.5.6"
+    debug "^4.3.3"
+    jsonwebtoken "^8.5.1"
+    lodash "^4.17.21"
+    long-timeout "^0.1.1"
+    uuid "^8.3.2"
+
 "@feathersjs/client@^4.5.13":
   version "4.5.13"
   resolved "https://registry.yarnpkg.com/@feathersjs/client/-/client-4.5.13.tgz#8c13bb5da2383a513d5831b7485df2b6afd11fb9"
@@ -1405,6 +1420,16 @@
     events "^3.2.0"
     uberproto "^2.0.6"
 
+"@feathersjs/feathers@^4.5.12":
+  version "4.5.12"
+  resolved "https://registry.yarnpkg.com/@feathersjs/feathers/-/feathers-4.5.12.tgz#86a99e601a99cd3a30f9e8841039b052676f5168"
+  integrity sha512-24bxpMpheBrDmVwwByNPPfXnXk2KkeiW3NvE3xXHbt7QzZj3OrPJ8WS5MqUZMPMFSLMyqlhRKs+hpQgfWhuxrA==
+  dependencies:
+    "@feathersjs/commons" "^4.5.12"
+    debug "^4.3.3"
+    events "^3.3.0"
+    uberproto "^2.0.6"
+
 "@feathersjs/rest-client@^4.5.12":
   version "4.5.12"
   resolved "https://registry.yarnpkg.com/@feathersjs/rest-client/-/rest-client-4.5.12.tgz#402e6eea0c752166de21611dd8e9a44dcb783317"
@@ -1423,6 +1448,17 @@
     "@feathersjs/errors" "^4.5.11"
     debug "^4.3.1"
     lodash "^4.17.20"
+    radix-router "^3.0.1"
+
+"@feathersjs/transport-commons@^4.5.12":
+  version "4.5.12"
+  resolved "https://registry.yarnpkg.com/@feathersjs/transport-commons/-/transport-commons-4.5.12.tgz#3993d03a1cfed630b0fc42e5dc1e92c76738fb28"
+  integrity sha512-c/FnP+xzCmfsHGj4NGhHpTy2haaA2jiKZ+du8rUUWBgxC73y3mw7udUGhWdDxGx2mnXtOKCwIA6oPQBdXtFC+A==
+  dependencies:
+    "@feathersjs/commons" "^4.5.12"
+    "@feathersjs/errors" "^4.5.12"
+    debug "^4.3.3"
+    lodash "^4.17.21"
     radix-router "^3.0.1"
 
 "@gar/promisify@^1.0.1":
@@ -2240,6 +2276,13 @@
   version "8.5.6"
   resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.5.6.tgz#1913e5a61e70a192c5a444623da4901a7b1a9d42"
   integrity sha512-+P3O/xC7nzVizIi5VbF34YtqSonFsdnbXBnWUCYRiKOi1f9gA4sEFvXkrGr/QVV23IbMYvcoerI7nnhDUiWXRQ==
+  dependencies:
+    "@types/node" "*"
+
+"@types/jsonwebtoken@^8.5.6":
+  version "8.5.8"
+  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.5.8.tgz#01b39711eb844777b7af1d1f2b4cf22fda1c0c44"
+  integrity sha512-zm6xBQpFDIDM6o9r6HSgDeIcLy82TKWctCXEPbJJcXb5AKmi5BNNdLXneixK4lplX3PqIVcwLBCGE/kAGnlD4A==
   dependencies:
     "@types/node" "*"
 
@@ -5469,7 +5512,7 @@ eventemitter3@^4.0.0:
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
   integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
 
-events@^3.0.0, events@^3.2.0:
+events@^3.0.0, events@^3.2.0, events@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
   integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
@@ -12153,7 +12196,7 @@ uuid@^3.3.2, uuid@^3.4.0:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
 
-uuid@^8.3.0, uuid@^8.3.1:
+uuid@^8.3.0, uuid@^8.3.1, uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
