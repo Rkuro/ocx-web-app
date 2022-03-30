@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectAuth, AuthenticatePayload } from "../authSlice";
 import { authenticateThunk } from "../authSlice";
 import { useNavigate } from "react-router-dom";
-import Routes from "../../../app/constants/routes";
+import ROUTES from "../../../app/constants/routes";
 import { LoaderContained } from "../../../components";
 import FadeContainer from "../../../components/animated/fade-container/FadeContainer";
 
@@ -79,7 +79,7 @@ const AuthStageLogin: React.FunctionComponent = () => {
             console.log(
                 "[Auth Login] Redirecting authenticated user to dashboard"
             );
-            navigate(Routes.DASHBOARD);
+            navigate(ROUTES.DASHBOARD);
         }
     }, [authState.user, navigate]);
 
@@ -100,7 +100,7 @@ const AuthStageLogin: React.FunctionComponent = () => {
                 <div className={classes.backContainer}>
                     <Button
                         className={classes.backButton}
-                        onClick={(): void => navigate(Routes.AUTH)}
+                        onClick={(): void => navigate(-1)}
                     >
                         <ArrowBackIcon />
                     </Button>

@@ -11,9 +11,14 @@ import {
     Divider,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { OAuthButtonGoogle, OAuthButtonGithub } from "../../../components/";
-import { useNavigate } from "react-router";
-import { Routes } from "../../../app/constants/routes";
+import {
+    OAuthButtonGoogle,
+    OAuthButtonGithub,
+    PageContainer,
+    Panel,
+} from "../../../components/";
+import { ROUTES } from "../../../app/constants/routes";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -75,58 +80,53 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const AuthStageLanding: React.FunctionComponent = () => {
     const classes = useStyles();
-    const navigate = useNavigate();
 
-    function handleUpdateStage(authStage: Routes): void {
-        navigate(authStage);
-    }
     return (
-        <div className={classes.root}>
-            <Typography className={classes.prompt} variant="h5">
-                How would you like to authenticate?
-            </Typography>
-            <Divider flexItem />
+        <PageContainer flex>
+            <div className={classes.contentContainer}>
+                <Panel corners inlineCorners disableAnimation>
+                    <div className={classes.root}>
+                        <Typography className={classes.prompt} variant="h5">
+                            How would you like to authenticate?
+                        </Typography>
+                        <Divider flexItem />
 
-            <div className={classes.authButtonContainer}>
-                <Button
-                    variant={"outlined"}
-                    className={classes.authButton}
-                    onClick={(): void => handleUpdateStage(Routes.SIGNUP)}
-                >
-                    SIGNUP
-                </Button>
-            </div>
+                        <div className={classes.authButtonContainer}>
+                            <Link to={ROUTES.LOGIN}>
+                                <Button
+                                    variant={"outlined"}
+                                    className={classes.authButton}
+                                >
+                                    LOGIN
+                                </Button>
+                            </Link>
+                        </div>
 
-            <div className={classes.authButtonContainer}>
-                <Button
-                    variant={"outlined"}
-                    className={classes.authButton}
-                    onClick={(): void => handleUpdateStage(Routes.LOGIN)}
-                >
-                    LOGIN
-                </Button>
-            </div>
-
-            <ExpansionPanel className={classes.oauthExpansionContainer}>
-                <ExpansionPanelSummary
-                    className={classes.oauthExpansionSummary}
-                    expandIcon={<ExpandMoreIcon />}
-                >
-                    <div className={classes.oauthButtonPrompt}>
-                        <Typography>Use OAuth</Typography>
+                        <ExpansionPanel
+                            className={classes.oauthExpansionContainer}
+                        >
+                            <ExpansionPanelSummary
+                                className={classes.oauthExpansionSummary}
+                                expandIcon={<ExpandMoreIcon />}
+                            >
+                                <div className={classes.oauthButtonPrompt}>
+                                    <Typography>Use OAuth</Typography>
+                                </div>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails
+                                className={classes.oauthExpansionDetails}
+                            >
+                                <div className={classes.oauthButtonPanel}>
+                                    <OAuthButtonGoogle />
+                                    <Divider />
+                                    <OAuthButtonGithub />
+                                </div>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
                     </div>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails
-                    className={classes.oauthExpansionDetails}
-                >
-                    <div className={classes.oauthButtonPanel}>
-                        <OAuthButtonGoogle />
-                        <Divider />
-                        <OAuthButtonGithub />
-                    </div>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
-        </div>
+                </Panel>
+            </div>
+        </PageContainer>
     );
 };
 

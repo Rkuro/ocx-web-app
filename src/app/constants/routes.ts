@@ -1,12 +1,18 @@
-export enum Routes {
+export enum ROUTES {
+    STAR = "*",
     HOME = "/",
-    AUTH = "auth/*",
+    AUTH = "auth",
     LOGIN = "login",
     SIGNUP = "signup",
     LANDING = "landing",
-    DASHBOARD = "dashboard/*",
+    DASHBOARD = "dashboard",
     LENDER_DASHBOARD = "lender",
     LENDEE_DASHBOARD = " lendee",
 }
 
-export default Routes;
+export const joinRoutes = (...routes: ROUTES[]): string => {
+    console.log("Joining routes: ", routes, "result", routes.join("/"));
+    return routes.join("/");
+};
+
+export default ROUTES;
