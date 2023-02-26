@@ -1388,10 +1388,10 @@
     long-timeout "^0.1.1"
     uuid "^8.3.2"
 
-"@feathersjs/client@^4.5.13":
-  version "4.5.13"
-  resolved "https://registry.yarnpkg.com/@feathersjs/client/-/client-4.5.13.tgz#8c13bb5da2383a513d5831b7485df2b6afd11fb9"
-  integrity sha512-bkHCarXMUBfRS2yphRYQRrVHQ379qCzKYRXpH1agBKIsmUCwqLhdpSUYK5gmCZVgtI720iR1ZmR28CYeLDNWAA==
+"@feathersjs/client@^4.5.15":
+  version "4.5.15"
+  resolved "https://registry.yarnpkg.com/@feathersjs/client/-/client-4.5.15.tgz#71b96010427075a75d47a809fbd4f377f16e41fa"
+  integrity sha512-2xFnXofikWTlwrSVar+G4UjrzAS7ZGiFHYSpi6dk0C7IXh6Ooniv4U+vHSz/CLlb45d4hGN43nzEGAQTb6T4LQ==
 
 "@feathersjs/commons@^4.5.11":
   version "4.5.11"
